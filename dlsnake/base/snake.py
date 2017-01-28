@@ -14,13 +14,13 @@ class Snake():
     Y_MIN = config.Y_MIN
 
     def __init__(self, x, y):
-        self.x = 0
-        self.y = 0
+        self.x = x
+        self.y = y
         self.score = 0
         # Value by which score should increment
         self.score_incr = 10
         # Moving towards right
-        self.xpeed = 1
+        self.xspeed = 1
         self.yspeed = 0
         self.died = False
 
