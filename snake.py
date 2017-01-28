@@ -3,13 +3,15 @@
 # snake.py
 #
 
+import config
+
 
 class Snake():
     # Grid of 10x10
-    X_MAX = 10
-    Y_MAX = 10
-    X_MIN = 0
-    Y_MIN = 0
+    X_MAX = config.X_MAX
+    Y_MAX = config.Y_MAX
+    X_MIN = config.X_MIN
+    Y_MIN = config.Y_MIN
 
     def __init__(self, x, y):
         self.x = 0
@@ -68,3 +70,4 @@ class Snake():
         using it
         Override if necessary
         '''
+        pass
