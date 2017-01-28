@@ -43,8 +43,8 @@ class Food:
         Private Method:
         Generates a new random position for the food
         '''
-        x = randint(self.X_MIN, self.X_MAX)
-        y = randint(self.Y_MIN, self.Y_MAX)
+        x = randint(self.X_MIN, self.X_MAX-1)
+        y = randint(self.Y_MIN, self.Y_MAX-1)
         return x, y
 
 

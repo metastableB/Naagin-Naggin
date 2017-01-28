@@ -36,7 +36,7 @@ class Snake():
         y = self.y + self.yspeed
         if x >= self.X_MAX:
             x = self.X_MIN
-        if y < self.X_MIN:
+        if x < self.X_MIN:
             x = self.X_MAX - 1
         if y >= self.Y_MAX:
             y = self.Y_MIN
@@ -51,7 +51,7 @@ class Snake():
         them should be zero all the time
         '''
         self.xspeed = xsp
-        self.yspped = ysp
+        self.yspeed = ysp
 
     def eat(self, f_x, f_y):
         '''

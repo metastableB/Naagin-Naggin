@@ -15,9 +15,9 @@ CELL_WIDTH = 40
 # cells. The snake takes cordinates in range (X,Y)_MIN to
 # (X,Y)_MAX (exclusive).
 X_MIN = 0
-X_MAX = (DISP_WIDTH / CELL_WIDTH)
+X_MAX = int(DISP_WIDTH / CELL_WIDTH)
 Y_MIN = 0
-Y_MAX = (DISP_HEIGHT / CELL_WIDTH)
+Y_MAX = int(DISP_HEIGHT / CELL_WIDTH)
 
 # Some color definitions
 COLOR_BLACK = (0, 0, 0)
@@ -27,4 +27,4 @@ COLOR_GREEN = (0, 255, 0)
 COLOR_BLUE = (0, 0, 255)
 INTR_SNAKE_COLOR = COLOR_BLUE
 
-GAME_FRAME_RATE = 10
+GAME_FRAME_RATE = 20

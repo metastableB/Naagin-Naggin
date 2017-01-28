@@ -1,28 +1,29 @@
 #
 # @author:Don Dennis (metastableB)
-# intrsnake.py
+# IntrFood.py
 #
-from dlsnake.base.snake import Snake
+
+from dlsnake.base.food import Food
 from dlsnake import config as cfg
 import pygame
 
 
-class IntrSnake(Snake):
+class IntrFood(Food):
     '''
-    Interactive version of snake, for display on
+    Interactive version of food, for display on
     pygame canvas
     '''
-    SNAKE_COLOR = cfg.INTR_SNAKE_COLOR
+    FOOD_COLOR = cfg.COLOR_GREEN
     CELL_WIDTH = cfg.CELL_WIDTH
 
-    def __init__(self, x, y):
-        Snake.__init__(self, x, y)
+    def __init__(self):
+        Food.__init__(self)
 
     def show(self, screen):
         x = self.x
         y = self.y
         xpix, ypix = self.__cell_to_pixels(x, y)
-        self.__color_cell(screen, xpix, ypix, self.SNAKE_COLOR)
+        self.__color_cell(screen, xpix, ypix, self.FOOD_COLOR)
 
     def __color_cell(self, screen, x, y, clr):
         '''
@@ -39,5 +40,3 @@ class IntrSnake(Snake):
         x = self.CELL_WIDTH * x
         y = self.CELL_WIDTH * y
         return x, y
-
-
