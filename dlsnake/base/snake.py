@@ -71,3 +71,6 @@ class Snake():
         Override if necessary
         '''
         pass
+
+    def get_head(self):
+        return self.x, self.y
