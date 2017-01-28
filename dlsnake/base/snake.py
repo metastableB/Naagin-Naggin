@@ -3,7 +3,7 @@
 # snake.py
 #
 
-import config
+from dlsnake import config
 
 
 class Snake():

@@ -4,7 +4,7 @@
 #
 
 from random import randint
-import config
+from dlsnake import config
 
 
 class Food:
