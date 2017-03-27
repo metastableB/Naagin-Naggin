@@ -3,22 +3,26 @@
 # snake.py
 #
 
-from dlsnake import config
-
 
 class Snake():
-    # Grid of 10x10
-    X_MAX = config.X_MAX
-    Y_MAX = config.Y_MAX
-    X_MIN = config.X_MIN
-    Y_MIN = config.Y_MIN
 
-    def __init__(self, x, y):
+    def __init__(self, x, y, numXCell, numYCell):
+        '''
+        Initializes a snake to x,y position(cordinates). Positive x along
+        width and positive y along top-down direction
+
+        :param: numXCell: Number of cells in x direction
+        :param: numYCell: Number of cells in y direction
+        '''
+        self.X_MAX = numXCell
+        self.Y_MAX = numYCell
+        self.X_MIN = 0
+        self.Y_MIN = 0
         self.x = x
         self.y = y
         self.score = 0
         # Value by which score should increment
-        self.score_incr = 10
+        self.scoreIncr = 10
         # Moving towards right
         self.xspeed = 1
         self.yspeed = 0
@@ -44,6 +48,7 @@ class Snake():
             y = self.Y_MAX - 1
         self.x = x
         self.y = y
+        return True
 
     def direction(self, xsp, ysp):
         '''
@@ -60,7 +65,7 @@ class Snake():
         '''
         if (f_x is not self.x) or (f_y is not self.y):
             return False
-        self.score += self.score_incr
+        self.score += self.scoreIncr
         return True
 
     def show(self, x, y):
@@ -72,5 +77,9 @@ class Snake():
         '''
         pass
 
-    def get_head(self):
+    def getHead(self):
         return self.x, self.y
+
+    def getSnakeCordinateList(self):
+        x = [(self.x, self.y)]
+        return x
