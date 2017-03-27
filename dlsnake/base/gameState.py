@@ -4,6 +4,7 @@
 #
 from dlsnake import config
 from dlsnake.base import food, snake
+import copy
 
 
 class GameState():
@@ -40,6 +41,7 @@ class GameState():
         self.grid = self.__empty_grid()
         self.food = food.Food(numXCell, numYCell)
         self.snake = snake.Snake(0, 0, numXCell, numYCell)
+        self.update()
         # FIXME: score is currently part of snake
         # Should be part of gameState
 
@@ -116,6 +118,36 @@ class GameState():
 
     def getScore(self):
         return self.snake.score
+
+    def getLegalActions(self):
+        '''
+        FIXME: all actions are legal
+        '''
+        return self.ALL_ACTIONS
+
+    def generateSnakeSuccessor(self, action):
+        '''
+        Generates the successor state after executing
+        action. The current state is not modified.
+        '''
+        successorGameState = copy.deepcopy(self)
+        successorGameState.chooseAction(action)
+        successorGameState.executeAction()
+        successorGameState.update()
+        return successorGameState
+
+    def getFoodCordinate(self):
+        '''
+        Returns the current cordinate of food
+        '''
+        return self.food.getFoodCordinate()
+
+    def getSnakeHeadCordinate(self):
+        '''
+        Returns the cordinate to the head of the
+        snake
+        '''
+        return self.snake.getHead()
     '''
     PRIVATE METHODS
     '''
@@ -141,20 +173,39 @@ class GameState():
 
 
 def demo():
-    gs = gameState(5, 4)
+    gs = GameState(5, 4)
+    print("Initial state followd by 4 LEFT motions.")
     print(gs.getGrid())
-    gs.chooseAction('LEFT')
     print()
-    print(gs.getGrid())
     gs.chooseAction('LEFT')
+    gs.executeAction()
+    gs.update()
+    print(gs.getGrid())
     print()
-    print(gs.getGrid())
     gs.chooseAction('LEFT')
+    gs.executeAction()
+    gs.update()
+    print(gs.getGrid())
     print()
-    print(gs.getGrid())
     gs.chooseAction('LEFT')
+    gs.executeAction()
+    gs.update()
+    print(gs.getGrid())
+    print()
+    gs.chooseAction('LEFT')
+    gs.executeAction()
+    gs.update()
+    print(gs.getGrid())
     print()
 
+    print("generating Successor for DOWN")
+    succ = gs.generateSnakeSuccessor("DOWN")
+    print("Original")
+    print(gs.getGrid())
+    print()
+    print("Successor")
+    print(succ.getGrid())
+    print()
 
 if __name__ == "__main__":
     demo()

@@ -8,13 +8,7 @@ NUM_X_CELL = 10
 NUM_Y_CELL = 10
 
 # Pixel width of cell (cells are squares)
-CELL_WIDTH = 40
-# Width and height of the display window
-DISP_WIDTH = 800
-DISP_HEIGHT = 600
-
-# Width of a square cell (this defines the size of the snake)
-CELL_WIDTH = 40
+CELL_WIDTH = 30
 
 # # Boundaries of the canvas available to the snake
 # # for movement  specified in terms of
