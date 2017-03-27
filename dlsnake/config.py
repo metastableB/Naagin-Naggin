@@ -4,8 +4,8 @@
 #
 
 # Number of cells along width (+x) and height (+y)
-NUM_CELL_WIDTH = 10
-NUM_CELL_HEIGHT = 10
+NUM_X_CELL = 10
+NUM_Y_CELL = 10
 
 # Pixel width of cell (cells are squares)
 CELL_WIDTH = 40

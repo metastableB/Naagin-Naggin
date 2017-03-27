@@ -6,7 +6,13 @@ from dlsnake import config
 from dlsnake.base import food, snake
 
 
-class gameState():
+class GameState():
+    '''
+    Contains all the information about the
+    current state of the game. Including
+    information like maze/grid positions
+    snake position, food etc
+    '''
     EMPTY_CELL_VALUE = config.EMPTY_CELL_VALUE
     FOOD_CELL_VALUE = config.FOOD_CELL_VALUE
     SNAKE_CELL_VALUE = config.SNAKE_CELL_VALUE
@@ -14,10 +20,12 @@ class gameState():
     ACTION_RIGHT = 'RIGHT'
     ACTION_UP = 'UP'
     ACTION_DOWN = 'DOWN'
+    ACTION_NONE = 'NONE'
     ALL_ACTIONS = [ACTION_LEFT,
                    ACTION_RIGHT,
                    ACTION_UP,
-                   ACTION_DOWN
+                   ACTION_DOWN,
+                   ACTION_NONE
                    ]
 
     def __init__(self, numXCell, numYCell):
@@ -32,7 +40,6 @@ class gameState():
         self.grid = self.__empty_grid()
         self.food = food.Food(numXCell, numYCell)
         self.snake = snake.Snake(0, 0, numXCell, numYCell)
-        self.__update()
         # FIXME: score is currently part of snake
         # Should be part of gameState
 
@@ -51,7 +58,7 @@ class gameState():
             s += '\n'
         return s[:-1]
 
-    def takeAction(self, action):
+    def chooseAction(self, action):
         '''
         Takes `action` on the gameState and updates
         the game state accordingly. Action is a movement
@@ -71,6 +78,12 @@ class gameState():
             snake.direction(-1, 0)
         if action == self.ACTION_RIGHT:
             snake.direction(1, 0)
+
+    def executeAction(self):
+        '''
+        Move according to previously taken action
+        '''
+        snake = self.snake
         # Move according to direction
         if not snake.update():
             return False
@@ -78,20 +91,9 @@ class gameState():
         x, y = self.food.getFoodCordinate()
         if(snake.eat(x, y)):
             self.food.newFood()
-        self.__update()
+        return True
 
-    def getScore(self):
-        return self.snake.score
-    '''
-    PRIVATE METHODS
-    '''
-
-    def __empty_grid(self):
-        row = [self.EMPTY_CELL_VALUE for x in range(0, self.numXCell)]
-        grid = [list(row) for x in range(0, self.numYCell)]
-        return grid
-
-    def __update(self):
+    def update(self):
         '''
         Updates the internal grid configuration
         based on the snake and food positions.
@@ -112,6 +114,17 @@ class gameState():
             grid[r_][c_] = self.SNAKE_CELL_VALUE
         self.grid = grid
 
+    def getScore(self):
+        return self.snake.score
+    '''
+    PRIVATE METHODS
+    '''
+
+    def __empty_grid(self):
+        row = [self.EMPTY_CELL_VALUE for x in range(0, self.numXCell)]
+        grid = [list(row) for x in range(0, self.numYCell)]
+        return grid
+
     def __cordsToIndex(self, list_cordinates):
         '''
         Takes a list of cordinates and convert
@@ -130,16 +143,16 @@ class gameState():
 def demo():
     gs = gameState(5, 4)
     print(gs.getGrid())
-    gs.takeAction('LEFT')
+    gs.chooseAction('LEFT')
     print()
     print(gs.getGrid())
-    gs.takeAction('LEFT')
+    gs.chooseAction('LEFT')
     print()
     print(gs.getGrid())
-    gs.takeAction('LEFT')
+    gs.chooseAction('LEFT')
     print()
     print(gs.getGrid())
-    gs.takeAction('LEFT')
+    gs.chooseAction('LEFT')
     print()
 
 
