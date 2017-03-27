@@ -17,6 +17,7 @@ class GameStateToGUI:
     frameRate = cfg.GAME_FRAME_RATE
     FOOD_COLOR = cfg.COLOR_GREEN
     SNAKE_COLOR = cfg.COLOR_BLUE
+    FONT_COLOR = cfg.COLOR_RED
 
     def __init__(self, gameState, cellWidth):
         '''
@@ -25,12 +26,14 @@ class GameStateToGUI:
         '''
         self.gameState = gameState
         self.cellWidth = cellWidth
-        width = cellWidth * gameState.numXCell
-        height = cellWidth * gameState.numYCell
+        self.canvasWidth = cellWidth * gameState.numXCell
+        self.canvasHeight = cellWidth * gameState.numYCell
         self.gameDisplay = pygame.display.set_mode(
-            (width, height))
+            (self.canvasWidth, self.canvasHeight))
         pygame.display.set_caption('Deep Learning Snake')
         self.clock = pygame.time.Clock()
+        pygame.font.init()
+        self.scoreFont = pygame.font.SysFont('Comic Sans MS', 40)
         self.died = False
 
     def show(self):
@@ -41,12 +44,23 @@ class GameStateToGUI:
         gameDisplay.fill(cfg.COLOR_WHITE)
         self.__drawFood()
         self.__drawSnake()
+        self.__drawScore()
         pygame.display.update()
         self.clock.tick(self.frameRate)
 
     '''
     PRIVATE METHODS
     '''
+
+    def __drawScore(self):
+        score = self.gameState.getScore()
+        score = str(score)
+        self.scoresurface = self.scoreFont.render(
+            score, False, self.FONT_COLOR)
+        pos_x = self.canvasWidth - 50
+        pos_y = 20
+        pos = (pos_x, pos_y)
+        self.gameDisplay.blit(self.scoresurface, pos)
 
     def __drawSnake(self):
         cordinates = self.gameState.snake.getSnakeCordinateList()
