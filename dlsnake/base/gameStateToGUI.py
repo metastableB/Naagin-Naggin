@@ -16,7 +16,8 @@ class GameStateToGUI:
     '''
     frameRate = cfg.GAME_FRAME_RATE
     FOOD_COLOR = cfg.COLOR_GREEN
-    SNAKE_COLOR = cfg.COLOR_BLUE
+    SNAKE_BODY_COLOR = cfg.COLOR_BLUE
+    SNAKE_HEAD_COLOR = cfg.COLOR_LIGHT_GREEN
     FONT_COLOR = cfg.COLOR_RED
 
     def __init__(self, gameState, cellWidth):
@@ -67,7 +68,10 @@ class GameStateToGUI:
         for cordinate in cordinates:
             x, y = cordinate
             xpix, ypix = self.__cell_to_pixels(x, y)
-            self.__color_cell(xpix, ypix, self.SNAKE_COLOR)
+            self.__color_cell(xpix, ypix, self.SNAKE_BODY_COLOR)
+        x_, y_ = self.gameState.snake.getHead()
+        xpix, ypix = self.__cell_to_pixels(x_, y_)
+        self.__color_cell(xpix, ypix, self.SNAKE_HEAD_COLOR)
 
     def __drawFood(self):
         x, y = self.gameState.food.getFoodCordinate()

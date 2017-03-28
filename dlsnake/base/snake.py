@@ -6,7 +6,7 @@
 
 class Snake():
 
-    def __init__(self, x, y, numXCell, numYCell):
+    def __init__(self, x, y, numXCell, numYCell, growing = True):
         '''
         Initializes a snake to x,y position(cordinates). Positive x along
         width and positive y along top-down direction
@@ -18,15 +18,14 @@ class Snake():
         self.Y_MAX = numYCell
         self.X_MIN = 0
         self.Y_MIN = 0
-        self.x = x
-        self.y = y
-        self.score = 0
-        # Value by which score should increment
-        self.scoreIncr = 10
+        self.head = (x, y)
+        self.previousTail = (None, None)
+        self.cordinates = [self.head]
         # Moving towards right
         self.xspeed = 1
         self.yspeed = 0
         self.died = False
+        self.growingSnake = growing
 
     def update(self):
         '''
@@ -36,8 +35,9 @@ class Snake():
         '''
         if self.died:
             return False
-        x = self.x + self.xspeed
-        y = self.y + self.yspeed
+        x, y = self.head
+        x += self.xspeed
+        y += self.yspeed
         if x >= self.X_MAX:
             x = self.X_MIN
         if x < self.X_MIN:
@@ -46,8 +46,10 @@ class Snake():
             y = self.Y_MIN
         if y < self.Y_MIN:
             y = self.Y_MAX - 1
-        self.x = x
-        self.y = y
+        self.head = (x, y)
+        self.cordinates.insert(0, self.head)
+        self.previousTail = self.cordinates[-1]
+        self.cordinates = self.cordinates[:-1]
         return True
 
     def direction(self, xsp, ysp):
@@ -61,11 +63,16 @@ class Snake():
     def eat(self, f_x, f_y):
         '''
         Returns True if the snake eats the food. Cordinates
-        of the food are arguments
+        of the food are arguments. If `growingSnake` is set
+        to true, the self.previousTail is used to increase the
+        length of the snake. Hence after each self.update(),
+        always call self.eat()
         '''
-        if (f_x is not self.x) or (f_y is not self.y):
+        x, y = self.head
+        if (f_x is not x) or (f_y is not y):
             return False
-        self.score += self.scoreIncr
+        if self.growingSnake:
+            self.cordinates.append(self.previousTail)
         return True
 
     def show(self, x, y):
@@ -78,8 +85,7 @@ class Snake():
         pass
 
     def getHead(self):
-        return self.x, self.y
+        return self.head
 
     def getSnakeCordinateList(self):
-        x = [(self.x, self.y)]
-        return x
+        return self.cordinates

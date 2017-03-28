@@ -16,7 +16,8 @@ class GameState():
     '''
     EMPTY_CELL_VALUE = config.EMPTY_CELL_VALUE
     FOOD_CELL_VALUE = config.FOOD_CELL_VALUE
-    SNAKE_CELL_VALUE = config.SNAKE_CELL_VALUE
+    SNAKE_BODY_CELL_VALUE = config.SNAKE_BODY_CELL_VALUE
+    SNAKE_HEAD_CELL_VALUE = config.SNAKE_HEAD_CELL_VALUE
     ACTION_LEFT = 'LEFT'
     ACTION_RIGHT = 'RIGHT'
     ACTION_UP = 'UP'
@@ -42,8 +43,9 @@ class GameState():
         self.food = food.Food(numXCell, numYCell)
         self.snake = snake.Snake(0, 0, numXCell, numYCell)
         self.update()
-        # FIXME: score is currently part of snake
-        # Should be part of gameState
+        self.score = 0
+        self.foodScore = 10
+        self.livingScore = -1
 
     def getGrid(self):
         '''
@@ -89,10 +91,12 @@ class GameState():
         # Move according to direction
         if not snake.update():
             return False
-        # Snake is not dead, try to eat food
+        # Snake is not dead, add livingScore and try to eat food
+        self.score += self.livingScore
         x, y = self.food.getFoodCordinate()
         if(snake.eat(x, y)):
             self.food.newFood()
+            self.score += self.foodScore
         return True
 
     def update(self):
@@ -113,11 +117,15 @@ class GameState():
         positions = self.__cordsToIndex(cords)
         for pos in positions:
             r_, c_ = pos
-            grid[r_][c_] = self.SNAKE_CELL_VALUE
+            grid[r_][c_] = self.SNAKE_BODY_CELL_VALUE
+        cords = self.snake.getHead()
+        pos = self.__cordsToIndex([cords])
+        r_, c_ = pos[0]
+        grid[r_][c_] = self.SNAKE_HEAD_CELL_VALUE
         self.grid = grid
 
     def getScore(self):
-        return self.snake.score
+        return self.score
 
     def getLegalActions(self):
         '''
@@ -148,6 +156,21 @@ class GameState():
         snake
         '''
         return self.snake.getHead()
+
+    def setFoodScore(self, value):
+        '''
+        Set the score the snake gets when
+        a food is eatern.
+        '''
+        self.foodScore = value
+
+    def setLivingScore(self, value):
+        '''
+        Sets the living score (can be negative). After
+        each move, this value is added to the snake.
+        '''
+        self.livingScore = value
+
     '''
     PRIVATE METHODS
     '''
@@ -206,6 +229,7 @@ def demo():
     print("Successor")
     print(succ.getGrid())
     print()
+
 
 if __name__ == "__main__":
     demo()

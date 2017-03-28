@@ -3,7 +3,7 @@
 # gui_game.py
 #
 
-
+import sys
 from dlsnake.base.gameStateToGUI import GameStateToGUI as toGUI
 import dlsnake.config as cfg
 from dlsnake.base.gameState import GameState
@@ -69,7 +69,7 @@ def playGameAgent(gameState, gui, agent, enableGUI=False):
 
 
 def main():
-    userPlayGame = False
+    userPlayGame = True
     agentPlayGame = not userPlayGame
     enableGUI = True
     gs = GameState(cfg.NUM_X_CELL, cfg.NUM_Y_CELL)
@@ -77,6 +77,7 @@ def main():
     if userPlayGame:
         playGameUser(gs, gui, enableGUI)
     elif agentPlayGame:
+        input('Press any key to continue.')
         reflexAgent = ReflexAgent()
         playGameAgent(gs, gui, reflexAgent, enableGUI)
 
