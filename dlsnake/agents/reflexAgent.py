@@ -60,4 +60,8 @@ class ReflexAgent():
             value += 1.0
         if scoreFactor != 0:
             value += scoreFactor
+
+        # We don't obviously want to die
+        if successorGameState.gameOver:
+            value -= 10
         return value
