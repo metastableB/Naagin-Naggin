@@ -13,11 +13,12 @@ Use python3 for all operations, and work from the project root directory.
 ## TODO
 - [ ] Document configuration options
 - [ ] ArgParser
-- [ ] Snake with increasing length
-- [ ] Head differently colored
-- [ ] Prevent reverse moves
+- [X] Snake with increasing length
+- [X] Head differently colored
+- [X] Prevent reverse moves
 - [ ] Fix toggling between GUI and non GUI versions
 - [X] Move score, foodScore and livingScore to gameState
-
+- [X] Check if food is valid
+- [ ] Check if update causes death
 
 SIDE NOTE: BOXY THEME WITH NUMIX SKIN IS AWESOME

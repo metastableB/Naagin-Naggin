@@ -20,19 +20,26 @@ def playGameUser(gameState, gui, enableGUI=False):
     '''
     died = False
     while not died:
+        eventList = []
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 died = True
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_UP:
-                    gameState.chooseAction('UP')
+                    eventList.append('UP')
+                    # gameState.chooseAction('UP')
                 if event.key == pygame.K_DOWN:
-                    gameState.chooseAction('DOWN')
+                    eventList.append('DOWN')
+                    # gameState.chooseAction('DOWN')
                 if event.key == pygame.K_LEFT:
-                    gameState.chooseAction('LEFT')
+                    eventList.append('LEFT')
+                    # gameState.chooseAction('LEFT')
                 if event.key == pygame.K_RIGHT:
-                    gameState.chooseAction('RIGHT')
+                    eventList.append('RIGHT')
+                    # gameState.chooseAction('RIGHT')
 
+        if len(eventList) is not 0:
+            gameState.chooseAction(eventList[-1])
         gameState.executeAction()
         gameState.update()
         if enableGUI:

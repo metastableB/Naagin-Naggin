@@ -46,6 +46,7 @@ class GameState():
         self.score = 0
         self.foodScore = 10
         self.livingScore = -1
+        self.gameOver = False
 
     def getGrid(self):
         '''
@@ -62,14 +63,55 @@ class GameState():
             s += '\n'
         return s[:-1]
 
+    def isValidFood(self, foodCord):
+        '''
+        Check if foodCord is a valid cordinate for the food.
+        Valid cordinates are those which has no conflicts with
+        the snake or with any wall that may be present
+        '''
+        snakeCord = self.snake.getSnakeCordinateList()
+        if foodCord in snakeCord:
+            print("Was invlaid.")
+            return False
+        return True
+
+    def isValidAction(self, action):
+        '''
+        Moving in reverse direction is not a valid action for
+        snakes with length more than 1 cell.
+        If the action causes motion in reverse direction,
+        we return false.
+        '''
+        snake = self.snake
+        if len(snake.getSnakeCordinateList()) == 1:
+            return True
+
+        if action not in self.ALL_ACTIONS:
+            raise ValueError('Specified action not part of `allActions`')
+
+        currDir = snake.getCurrentDirection()
+        if action == self.ACTION_UP and currDir == (0, 1):
+            return False
+        elif action == self.ACTION_DOWN and currDir == (0, -1):
+            return False
+        elif action == self.ACTION_LEFT and currDir == (1, 0):
+            return False
+        elif action == self.ACTION_RIGHT and currDir == (-1, 0):
+            return False
+        return True
+
     def chooseAction(self, action):
         '''
         Takes `action` on the gameState and updates
-        the game state accordingly. Action is a movement
+        the snakes direction accordingly. Action is a movement
         key, either LEFT, RIGHT, UP or DOWN as defined in
-        gameState.allActions
-
+        gameState.allActions. The snake's direction is updated
+        but the snakes cordinates are not updated. Hence
+        if multiple chooseAction() is called, only the last
+        called valid action will have any effect.
         '''
+        if not self.isValidAction(action):
+            return False
         # Change the direction
         snake = self.snake
         if action not in self.ALL_ACTIONS:
@@ -82,20 +124,31 @@ class GameState():
             snake.direction(-1, 0)
         if action == self.ACTION_RIGHT:
             snake.direction(1, 0)
+        return True
 
     def executeAction(self):
         '''
-        Move according to previously taken action
+        Move according to previously taken valid action. This updates
+        the snakes cordinates and food cordinates, according to the
+        existing direction of motion. This does
+        not update the gameStateGrid.
+
+        returns False if the snake has died, else returns True
         '''
         snake = self.snake
         # Move according to direction
         if not snake.update():
+            self.gameOver = True
             return False
         # Snake is not dead, add livingScore and try to eat food
         self.score += self.livingScore
         x, y = self.food.getFoodCordinate()
         if(snake.eat(x, y)):
-            self.food.newFood()
+            validFood = False
+            while(not validFood):
+                self.food.newFood()
+                fx, fy = self.food.getFoodCordinate()
+                validFood = self.isValidFood((fx, fy))
             self.score += self.foodScore
         return True
 
@@ -128,10 +181,11 @@ class GameState():
         return self.score
 
     def getLegalActions(self):
-        '''
-        FIXME: all actions are legal
-        '''
-        return self.ALL_ACTIONS
+        ret = []
+        for action in self.ALL_ACTIONS:
+            if isValidAction(action):
+                ret.append(action)
+        return ret
 
     def generateSnakeSuccessor(self, action):
         '''
