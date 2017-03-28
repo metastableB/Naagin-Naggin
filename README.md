@@ -23,5 +23,7 @@ Use python3 for all operations, and work from the project root directory.
 - [ ] Special power food
 - [X] Add border to cells
 - [X] Add gameover message
+- [ ] Add walls
+- [ ] Add something which actually looks like head/tail
 
 SIDE NOTE: BOXY THEME WITH NUMIX SKIN IS AWESOME

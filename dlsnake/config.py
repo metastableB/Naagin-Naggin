@@ -4,11 +4,11 @@
 #
 
 # Number of cells along width (+x) and height (+y)
-NUM_X_CELL = 10
-NUM_Y_CELL = 10
+NUM_X_CELL = 20
+NUM_Y_CELL = 20
 
 # Pixel width of cell (cells are squares)
-CELL_WIDTH = 50
+CELL_WIDTH = 30
 
 # # Boundaries of the canvas available to the snake
 # # for movement  specified in terms of
