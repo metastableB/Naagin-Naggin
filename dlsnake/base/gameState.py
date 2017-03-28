@@ -71,7 +71,6 @@ class GameState():
         '''
         snakeCord = self.snake.getSnakeCordinateList()
         if foodCord in snakeCord:
-            print("Was invlaid.")
             return False
         return True
 

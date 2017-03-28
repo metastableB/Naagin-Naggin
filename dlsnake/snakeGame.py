@@ -42,12 +42,13 @@ def playGameUser(gameState, gui, enableGUI=False):
             gameState.chooseAction(eventList[-1])
         gameState.executeAction()
         gameState.update()
+        died = gameState.gameOver
         if enableGUI:
             gui.show()
         else:
             print(gameState.getGrid())
             print()
-
+    input('Game Over!\nPress any key to continue.')
     pygame.quit()
     quit()
 

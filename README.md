@@ -19,6 +19,8 @@ Use python3 for all operations, and work from the project root directory.
 - [ ] Fix toggling between GUI and non GUI versions
 - [X] Move score, foodScore and livingScore to gameState
 - [X] Check if food is valid
-- [ ] Check if update causes death
+- [X] Check if update causes death
+- [ ] Special power food
+- [ ] Add border to cells
 
 SIDE NOTE: BOXY THEME WITH NUMIX SKIN IS AWESOME

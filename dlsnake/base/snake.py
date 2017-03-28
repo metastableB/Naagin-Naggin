@@ -46,10 +46,16 @@ class Snake():
             y = self.Y_MIN
         if y < self.Y_MIN:
             y = self.Y_MAX - 1
-        self.head = (x, y)
-        self.cordinates.insert(0, self.head)
+
+        newHead = (x, y)
+        if newHead in self.cordinates[1:]:
+            self.died = True
+            return False
+        self.head = newHead
         self.previousTail = self.cordinates[-1]
         self.cordinates = self.cordinates[:-1]
+        self.cordinates.insert(0, self.head)
+
         return True
 
     def direction(self, xsp, ysp):
