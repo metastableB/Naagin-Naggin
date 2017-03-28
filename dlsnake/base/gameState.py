@@ -182,7 +182,7 @@ class GameState():
     def getLegalActions(self):
         ret = []
         for action in self.ALL_ACTIONS:
-            if isValidAction(action):
+            if self.isValidAction(action):
                 ret.append(action)
         return ret
 

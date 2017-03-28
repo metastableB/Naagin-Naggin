@@ -3,7 +3,7 @@
 # gui_game.py
 #
 
-import sys
+import time
 from dlsnake.base.gameStateToGUI import GameStateToGUI as toGUI
 import dlsnake.config as cfg
 from dlsnake.base.gameState import GameState
@@ -48,7 +48,7 @@ def playGameUser(gameState, gui, enableGUI=False):
         else:
             print(gameState.getGrid())
             print()
-    input('Game Over!\nPress any key to continue.')
+    time.sleep(1)
     pygame.quit()
     quit()
 
@@ -77,7 +77,7 @@ def playGameAgent(gameState, gui, agent, enableGUI=False):
 
 
 def main():
-    userPlayGame = True
+    userPlayGame = False
     agentPlayGame = not userPlayGame
     enableGUI = True
     gs = GameState(cfg.NUM_X_CELL, cfg.NUM_Y_CELL)
@@ -85,7 +85,6 @@ def main():
     if userPlayGame:
         playGameUser(gs, gui, enableGUI)
     elif agentPlayGame:
-        input('Press any key to continue.')
         reflexAgent = ReflexAgent()
         playGameAgent(gs, gui, reflexAgent, enableGUI)
 

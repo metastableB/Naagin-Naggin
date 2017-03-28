@@ -19,6 +19,7 @@ class GameStateToGUI:
     SNAKE_BODY_COLOR = cfg.COLOR_BLUE
     SNAKE_HEAD_COLOR = cfg.COLOR_LIGHT_GREEN
     FONT_COLOR = cfg.COLOR_RED
+    gameOverMessage = "Game Over!"
 
     def __init__(self, gameState, cellWidth):
         '''
@@ -34,7 +35,7 @@ class GameStateToGUI:
         pygame.display.set_caption('Deep Learning Snake')
         self.clock = pygame.time.Clock()
         pygame.font.init()
-        self.scoreFont = pygame.font.SysFont('Comic Sans MS', 40)
+        self.scoreFont = pygame.font.SysFont('Comic Sans MS', self.cellWidth)
         self.died = False
 
     def show(self):
@@ -46,6 +47,7 @@ class GameStateToGUI:
         self.__drawFood()
         self.__drawSnake()
         self.__drawScore()
+        self.__drawMessage()
         pygame.display.update()
         self.clock.tick(self.frameRate)
 
@@ -53,13 +55,22 @@ class GameStateToGUI:
     PRIVATE METHODS
     '''
 
+    def __drawMessage(self):
+        if self.gameState.gameOver:
+            self.gameOverMessageSurface = self.scoreFont.render(
+                self.gameOverMessage, False, self.FONT_COLOR)
+            pos_x = self.canvasWidth / 2 - 2 * self.cellWidth
+            pos_y = self.canvasHeight / 2
+            pos = (pos_x, pos_y)
+            self.gameDisplay.blit(self.gameOverMessageSurface, pos)
+
     def __drawScore(self):
         score = self.gameState.getScore()
         score = str(score)
         self.scoresurface = self.scoreFont.render(
             score, False, self.FONT_COLOR)
-        pos_x = self.canvasWidth - 50
-        pos_y = 20
+        pos_x = self.canvasWidth - 2 * self.cellWidth
+        pos_y = 0.2 * self.cellWidth
         pos = (pos_x, pos_y)
         self.gameDisplay.blit(self.scoresurface, pos)
 
@@ -83,7 +94,10 @@ class GameStateToGUI:
         Colors the box identified by x,y with color clr
         '''
         screen = self.gameDisplay
-        pygame.draw.rect(screen, clr, (x, y, self.cellWidth, self.cellWidth))
+        border = 2
+        boundingBox = (x + border, y + border, self.cellWidth -
+                       border, self.cellWidth - border)
+        pygame.draw.rect(screen, clr, boundingBox)
 
     def __cell_to_pixels(self, x, y):
         '''

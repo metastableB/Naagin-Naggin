@@ -22,5 +22,6 @@ Use python3 for all operations, and work from the project root directory.
 - [X] Check if update causes death
 - [ ] Special power food
 - [ ] Add border to cells
+- [ ] Add gameover message
 
 SIDE NOTE: BOXY THEME WITH NUMIX SKIN IS AWESOME
