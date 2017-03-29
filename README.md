@@ -50,4 +50,4 @@ Various agents have been included and can be enabled using the `--agent` flag.
 - [ ] Train an image based Q-learning agent
 
 
-[previewReflexAgent]: https://github.com/metastableB/Naagin-Naggin/dlsnake/preview/01_reflexAgent.gif "Logo Title Text 2"
+[previewReflexAgent]: dlsnake/preview/01_reflexAgent.gif "Logo Title Text 2"
