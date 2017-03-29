@@ -115,11 +115,7 @@ class MaxManhattanFoodAgent(FoodAgent):
         fx, fy = foodCords
         i = 0
         while not validFood and i < 5:
-            # FIXME: need to consider X_MIN
-            fx += 1
-            fx %= self.X_MAX
-            fy += 1
-            fy %= self.Y_MAX
+            fx, fy = self.__getDiagonallyNext(fx, fy)
             validFood = self._FoodAgent__isValidFood((fx, fy), gameState)
             i += 1
         if validFood:
@@ -141,3 +137,12 @@ class MaxManhattanFoodAgent(FoodAgent):
         self.corners.append((X_MIN, Y_MAX - 1))
         self.corners.append((X_MAX - 1, Y_MAX - 1))
         self.corners.append((X_MAX - 1, Y_MIN))
+
+    def __getDiagonallyNext(self, fx, fy):
+        x = +1
+        y = +1
+        if fx > self.X_MAX - fx:
+            x = -1
+        if fy > self.Y_MAX - fy:
+            y = -1
+        return (fx + x, fy + y)
