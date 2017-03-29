@@ -13,6 +13,7 @@ Development:
  ✔ Add gameover message @done (17-03-30 02:43)
  ☐ Add walls
  ☐ Add some graphics which actually looks like head/tail
+ ☐ Typo; replace all 'cordinate' with 'coordinates'
 
 Pertaining to Project:
   ✔ Implement manual play @done (17-03-30 02:43)

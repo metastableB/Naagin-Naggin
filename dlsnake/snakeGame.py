@@ -9,6 +9,7 @@ import dlsnake.config as cfg
 from dlsnake.base.gameState import GameState
 import pygame
 from dlsnake.agents.reflexAgent import ReflexAgent
+from dlsnake.agents.foodAgent import MaxManhattanFoodAgent
 
 frameRate = cfg.GAME_FRAME_RATE
 
@@ -80,7 +81,8 @@ def main():
     userPlayGame = False
     agentPlayGame = not userPlayGame
     enableGUI = True
-    gs = GameState(cfg.NUM_X_CELL, cfg.NUM_Y_CELL)
+    gs = GameState(cfg.NUM_X_CELL, cfg.NUM_Y_CELL,
+                   foodAgent=MaxManhattanFoodAgent)
     gui = toGUI(gs, cfg.CELL_WIDTH)
     if userPlayGame:
         playGameUser(gs, gui, enableGUI)
