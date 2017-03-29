@@ -18,8 +18,11 @@ Development:
 Pertaining to Project:
   ✔ Implement manual play @done (17-03-30 02:43)
   ✔ Implement Reflex Agent @done (17-03-30 02:43)
-  ☐ Implement intellegent adversary controlling food capsules so as to trap snake.
-  ☐ Implement adverserial search (minMax)
+  ☐ Implement intelligent adversary controlling food capsules so as to trap snake.
+    ✔ Adversary maximizing Manhattan distance from snake @done (17-03-30 04:06)
+    ☐ Adversary trying to place food in circular configurations formed by snake
+    ☐ Adversary trying to place food near walls
+  ☐ Implement adversarial search (minMax)
   ☐ Implement expectimax search
   ☐ Implement MDP based Q-Learning
   ☐ Implement grids + MDP based Q-learning
