@@ -4,6 +4,7 @@
 #
 from dlsnake import config
 from dlsnake.base import food, snake
+from dlsnake.agents.foodAgent import RandomFoodAgent
 import copy
 
 
@@ -30,21 +31,26 @@ class GameState():
                    ACTION_NONE
                    ]
 
-    def __init__(self, numXCell, numYCell):
+    def __init__(self, numXCell, numYCell, foodAgent=RandomFoodAgent):
         '''
         Contains all the information about the
         current state of the game. Including
         information like maze/grid positions
         snake position, food etc
+
+        The foodAgent is a part of the game rules
+        and not the external world, hence it is
+        included as part of the gameState object.
         '''
         self.numXCell = numXCell
         self.numYCell = numYCell
         self.grid = self.__empty_grid()
         self.food = food.Food(numXCell, numYCell)
         self.snake = snake.Snake(0, 0, numXCell, numYCell)
+        self.foodAgent = foodAgent()
         self.update()
         self.score = 0
-        self.foodScore = 10
+        self.foodScore = 50
         self.livingScore = -1
         self.gameOver = False
 
@@ -62,17 +68,6 @@ class GameState():
                 s += str(grid[x][y])
             s += '\n'
         return s[:-1]
-
-    def isValidFood(self, foodCord):
-        '''
-        Check if foodCord is a valid cordinate for the food.
-        Valid cordinates are those which has no conflicts with
-        the snake or with any wall that may be present
-        '''
-        snakeCord = self.snake.getSnakeCordinateList()
-        if foodCord in snakeCord:
-            return False
-        return True
 
     def isValidAction(self, action):
         '''
@@ -143,11 +138,8 @@ class GameState():
         self.score += self.livingScore
         x, y = self.food.getFoodCordinate()
         if(snake.eat(x, y)):
-            validFood = False
-            while(not validFood):
-                self.food.newFood()
-                fx, fy = self.food.getFoodCordinate()
-                validFood = self.isValidFood((fx, fy))
+            fx, fy = self.foodAgent.getNextFoodCordinates(self)
+            self.food.newFood(fx, fy)
             self.score += self.foodScore
         return True
 

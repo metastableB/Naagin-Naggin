@@ -4,12 +4,11 @@
 #
 
 from random import randint
-from dlsnake import config
 
 
 class Food:
 
-    def __init__(self, numXCell, numYCell):
+    def __init__(self, numXCell, numYCell, x = None, y = None):
         '''
         Initializes a food to random positoin. Positive x along
         width and positive y along top-down direction
@@ -23,14 +22,16 @@ class Food:
         self.Y_MAX = numYCell
         self.X_MIN = 0
         self.Y_MIN = 0
-        self.newFood()
+        self.x, self.y = x, y
+        if None in [x, y]:
+            self.x, self.y = self.__randomFood()
 
-    def newFood(self):
+    def newFood(self, x, y):
         '''
         Places food in a new position
         x and y are cordinates.
         '''
-        self.x, self.y = self.__randomFood()
+        self.x, self.y = x, y
 
     def getFoodCordinate(self):
         '''
@@ -59,13 +60,13 @@ class Food:
 
 
 def demo():
-    f1 = Food(2,2)
-    f2 = Food(2,3)
+    f1 = Food(2, 2, 1, 1)
+    f2 = Food(2, 3, 2, 1)
 
     print("f1 init: " + str(f1.getFoodCordinate()))
     print("f2 init: " + str(f2.getFoodCordinate()))
-    f1.newFood()
-    f2.newFood()
+    f1.newFood(2, 1)
+    f2.newFood(1, 1)
     print("f1 new: " + str(f1.getFoodCordinate()))
     print("f2 new: " + str(f2.getFoodCordinate()))
 
