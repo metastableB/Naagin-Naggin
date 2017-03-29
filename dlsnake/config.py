@@ -10,15 +10,6 @@ NUM_Y_CELL = 20
 # Pixel width of cell (cells are squares)
 CELL_WIDTH = 30
 
-# # Boundaries of the canvas available to the snake
-# # for movement  specified in terms of
-# # cells. The snake takes cordinates in range (X,Y)_MIN to
-# # (X,Y)_MAX (exclusive).
-# X_MIN = 0
-# X_MAX = int(DISP_WIDTH / CELL_WIDTH)
-# Y_MIN = 0
-# Y_MAX = int(DISP_HEIGHT / CELL_WIDTH)
-
 # Some color definitions
 COLOR_BLACK = (0, 0, 0)
 COLOR_WHITE = (255, 255, 255)
