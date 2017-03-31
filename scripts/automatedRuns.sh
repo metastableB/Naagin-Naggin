@@ -16,8 +16,8 @@
 
 # TODO: Move to command line arguments
 numRuns=10
-foodAgent='RandomFoodAgent'
-snakeAgent='ReflexAgent'
+foodAgent='MaxManhattanFoodAgent'
+snakeAgent='MinMaxAgent'
 
 # add dlsnake to python path
 dlsnakePATH=$(pwd)/../
@@ -25,5 +25,5 @@ export PYTHONPATH=${PYTHONPATH}:${dlsnakePATH}
 
 # Run for numRun tries
 for i in $(seq 1 ${numRuns}); do
-	python -m dlsnake.snakeGame --agent ${snakeAgent} --silent --csv
+	python -m dlsnake.snakeGame --agent=MinMaxAgent   --food-agent=MaxManhattanFoodAgent --depth=6 --csv --silent
 done

@@ -65,10 +65,8 @@ def playGameAgent(gameState, guiDriver, agent,
     '''
     died = False
     quitGame = False
-    print(agent.depth)
     enableGUI = guiDriver is not None and not silent
     enableTextGraphics = enableTextGraphics and not silent
-    input("Press any key to continue")
     while not died and not quitGame:
         if enableGUI:
             for event in pygame.event.get():
@@ -95,6 +93,8 @@ def playGameAgent(gameState, guiDriver, agent,
         time.sleep(2)
     if csvOut:
         print('%d, %d' % (score, snakeLen))
+        import sys
+        sys.stdout.flush()
     pygame.quit()
     quit()
 

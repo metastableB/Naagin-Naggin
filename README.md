@@ -6,10 +6,10 @@ Using adverserial search, reinforcement learning and eventually deep-q learning 
 
 Properties|Reflex-Agent | MinMax-Agent|
 |----------|-------------|-------------|
-|Preview    |<img src="dlsnake/preview/01.gif" height="200" alt="A Simple Reflex-Agent playing Snake">||
+|Preview    |<img src="dlsnake/preview/01.gif" height="200" alt="A Simple Reflex-Agent playing Snake">|<img src="dlsnake/preview/02.gif" height="200" alt="A Simple MinMax-Agent playing Snake">|
 |Grid Size| 20x20 | 20x20|
-SnakeAgent| Reflex Agent| MinMax-Agent
-Food Agent| MaxManhattanFoodAgent||
+SnakeAgent| Reflex Agent| MinMax-Agent|
+Food Agent| MaxManhattanFoodAgent|MaxManhattanFoodAgent|
 Score| 2021||
 Snake Length | 67|
 Time-Real| 1m14.105s |
