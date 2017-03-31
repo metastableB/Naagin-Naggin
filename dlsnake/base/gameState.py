@@ -75,6 +75,10 @@ class GameState():
         snakes with length more than 1 cell.
         If the action causes motion in reverse direction,
         we return false.
+
+        Here validity is defined in terms of the rules of the
+        game. Hence choosing to run into ones on body or a wall
+        are perfectly valid actions according to game rules.
         '''
         snake = self.snake
         if len(snake.getSnakeCordinateList()) == 1:
@@ -120,13 +124,16 @@ class GameState():
             snake.direction(1, 0)
         return True
 
-    def executeAction(self):
+    def executeAction(self, newFood=True):
         '''
         Move according to previously taken valid action. This updates
         the snakes cordinates and food cordinates, according to the
         existing direction of motion. This does
         not update the gameStateGrid.
 
+        if newFood is set to False, no new food will be generated
+        even if the snake eats the food. If the snake eats the food,
+        new food is set to None
         returns False if the snake has died, else returns True
         '''
         snake = self.snake
@@ -138,8 +145,11 @@ class GameState():
         self.score += self.livingScore
         x, y = self.food.getFoodCordinate()
         if(snake.eat(x, y)):
-            fx, fy = self.foodAgent.getNextFoodCordinates(self)
-            self.food.newFood(fx, fy)
+            if newFood:
+                fx, fy = self.foodAgent.getNextFoodCordinates(self)
+                self.food.newFood(fx, fy)
+            else:
+                self.food.newFood(None, None)
             self.score += self.foodScore
         return True
 
@@ -153,10 +163,11 @@ class GameState():
         self.grid = self.__empty_grid()
         grid = self.grid
         cords = self.food.getFoodCordinate()
-        positions = self.__cordsToIndex([cords])
-        for pos in positions:
-            r_, c_ = pos
-            grid[r_][c_] = self.FOOD_CELL_VALUE
+        if None not in cords:
+            positions = self.__cordsToIndex([cords])
+            for pos in positions:
+                r_, c_ = pos
+                grid[r_][c_] = self.FOOD_CELL_VALUE
         cords = self.snake.getSnakeCordinateList()
         positions = self.__cordsToIndex(cords)
         for pos in positions:
@@ -171,23 +182,85 @@ class GameState():
     def getScore(self):
         return self.score
 
-    def getLegalActions(self):
+    def getLegalActionsSnake(self):
+        '''
+        Returns a list of legal actions that the
+        snake can make. The actions will be a subset
+        of self.ALL_ACTIONS
+        '''
         ret = []
         for action in self.ALL_ACTIONS:
             if self.isValidAction(action):
                 ret.append(action)
         return ret
 
-    def generateSnakeSuccessor(self, action):
+    def getLegalActionsFoodAgent(self):
+        '''
+        Returns a list of cordinates which are
+        valid positions for the current foodAgent
+        to place food. The definition of validity
+        depends on the foodAgent being used. For
+        the RandomFoodAgent, all unoccupied cells
+        are valid.
+        '''
+        foodCord = self.getFoodCordinate()
+        if None in foodCord:
+            return self.foodAgent.getLegalActions()
+        else:
+            return []
+
+    def generateSuccessor(self, action):
         '''
         Generates the successor state after executing
-        action. The current state is not modified.
+        action for snake and foodAgent. The current
+        state is not modified and a new GameState
+        instance is returned.
         '''
         successorGameState = copy.deepcopy(self)
         successorGameState.chooseAction(action)
         successorGameState.executeAction()
         successorGameState.update()
         return successorGameState
+
+    def generateSnakeSuccessor(self, action):
+        return self.generateAgentSuccessor(self, 0, action)
+
+    def generateFoodAgentSuccessor(self, action):
+        return self.generateAgentSuccessor(self, 1, action)
+
+    def generateAgentSuccessor(self, agent, action):
+        '''
+        Generates the successor state after execution
+        action for agent. If agent=0, indicating
+        snake, the actions should be part of
+        gameState.ALL_ACTIONS. If instead, agent=1, the
+        foodAgent, then action should be a legal cordinate
+        for placing the food packet
+        '''
+        successorGameState = copy.deepcopy(self)
+        if agent not in [0, 1]:
+            raise ValueError("Agent Should be either 0 or 1.")
+        if agent == 0:
+            foodCord = self.getFoodCordinate()
+            msg = 'There is no food on the grid!'
+            msg += ' Did the foodAgent get a chance to act?'
+            assert None in foodCord, msg
+
+            successorGameState.chooseAction(action)
+            successorGameState.executeAction(newFood=False)
+            successorGameState.update()
+            return successorGameState
+        elif agent == 1:
+            foodCord = self.getFoodCordinate()
+            msg = 'There is food on the grid!'
+            msg += ' Why is foodAgent trying to add more food?'
+            assert None in foodCord, msg
+            # We don't have food
+            fx, fy = successorGameState.foodAgent.getNextFoodCordinates(
+                successorGameState)
+            successorGameState.food.newFood(fx, fy)
+            successorGameState.update()
+            return successorGameState
 
     def getFoodCordinate(self):
         '''
@@ -201,6 +274,13 @@ class GameState():
         snake
         '''
         return self.snake.getHead()
+
+    def getSnakeCordinates(self):
+        '''
+        Returns a list of coordinates occupied
+        by the snake.
+        '''
+        return self.snake.getSnakeCordinateList()
 
     def setFoodScore(self, value):
         '''

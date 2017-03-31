@@ -89,6 +89,7 @@ def playGameAgent(gameState, guiDriver, agent,
         print("Game Over!")
         print("Score: %d" % score)
         print("SnakeLen: %d" % snakeLen)
+        time.sleep(2)
     if csvOut:
         print('%d, %d' % (score, snakeLen))
     pygame.quit()

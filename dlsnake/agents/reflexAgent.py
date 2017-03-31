@@ -24,7 +24,7 @@ class ReflexAgent(Agent):
         most optimun action depending on the evaluation
         function
         """
-        legalMoves = gameState.getLegalActions()
+        legalMoves = gameState.getLegalActionsSnake()
 
         # Choose one of the best actions
         scores = [self.evaluationFunction(
@@ -44,8 +44,7 @@ class ReflexAgent(Agent):
         """
         A simple evaluation function
         """
-        # Useful information you can extract from a GameState (pacman.py)
-        successorGameState = currentGameState.generateSnakeSuccessor(
+        successorGameState = currentGameState.generateSuccessor(
             action)
         value = 0.0
         newFood = successorGameState.getFoodCordinate()
