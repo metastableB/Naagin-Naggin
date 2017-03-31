@@ -4,9 +4,10 @@
 #
 
 import random
+from dlsnake.agents.agent import Agent
 
 
-class ReflexAgent():
+class ReflexAgent(Agent):
     '''
     Reflex agent with different evaluation functions.
     A reflex agent chooses an action at each choice point

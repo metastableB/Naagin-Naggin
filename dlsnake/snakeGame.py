@@ -54,7 +54,10 @@ def playGameUser(gameState, gui, enableText=False):
     quit()
 
 
-def playGameAgent(gameState, guiDriver, agent, enableText=False):
+def playGameAgent(gameState, guiDriver, agent,
+                  enableTextGraphics=False,
+                  silent=False,
+                  csvOut=False):
     '''
     Runs a gui version of the agme that
     can be played using the arrow keys
@@ -62,7 +65,8 @@ def playGameAgent(gameState, guiDriver, agent, enableText=False):
     died = False
     agent = agent()
     quitGame = False
-    enableGUI = guiDriver is not None
+    enableGUI = guiDriver is not None and not silent
+    enableTextGraphics = enableTextGraphics and not silent
     while not died and not quitGame:
         if enableGUI:
             for event in pygame.event.get():
@@ -75,15 +79,18 @@ def playGameAgent(gameState, guiDriver, agent, enableText=False):
         gameState.update()
         if enableGUI:
             guiDriver.show()
-        if enableText:
+        if enableTextGraphics:
             print(gameState.getGrid())
             print()
         died = gameState.gameOver
-    print("Game Over!")
     score = gameState.score
     snakeLen = len(gameState.snake.getSnakeCordinateList())
-    print("Score: %d" % score)
-    print("SnakeLen: %d" % snakeLen)
+    if not silent:
+        print("Game Over!")
+        print("Score: %d" % score)
+        print("SnakeLen: %d" % snakeLen)
+    if csvOut:
+        print('%d, %d' % (score, snakeLen))
     pygame.quit()
     quit()
 
@@ -135,6 +142,18 @@ def get_arguments():
                     dest='frameRate',
                     type=int,
                     default=FRAME_RATE)
+    ap.add_argument('-z', '--silent',
+                    help='Silently execute, no output to console' +
+                    ' and no graphics.',
+                    action='store_true',
+                    default=False,
+                    dest='silent')
+    ap.add_argument('-c', '--csv',
+                    help='Prints (score, length) csv value. Can be used' +
+                    ' along with the --silent flag.',
+                    default=False,
+                    dest='csv',
+                    action='store_true')
     args = ap.parse_args()
     return args
 
@@ -147,7 +166,13 @@ def main():
     if snakeAgent is not None:
         snakeAgent = ArgumentOptions.agentChoiceDict[snakeAgent]
     enableGUI = not args.noGraphics
-    enableText = args.textGraphics
+    enableTextGraphics = args.textGraphics
+    silent = False
+    if args.silent:
+        enableGUI = False
+        enableTextGraphics = False
+        silent = True
+    csvOut = args.csv
     frameRate = args.frameRate
     gameState = GameState(cfg.NUM_X_CELL, cfg.NUM_Y_CELL,
                           foodAgent=foodAgent)
@@ -161,9 +186,11 @@ def main():
             print("You have turned off graphics. " +
                   "Either turn graphics on or specify an automated agent.")
             exit(1)
-        playGameUser(gameState, guiDriver, enableText)
+        playGameUser(gameState, guiDriver, enableTextGraphics)
     else:
-        playGameAgent(gameState, guiDriver, snakeAgent, enableText)
+        playGameAgent(gameState, guiDriver, snakeAgent,
+                      enableTextGraphics, silent,
+                      csvOut)
 
 
 if __name__ == '__main__':
