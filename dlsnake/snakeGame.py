@@ -129,7 +129,8 @@ def get_arguments():
                     default=False,
                     dest='textGraphics')
     ap.add_argument('-f', '--frame-rate',
-                    help='Frame rate for GUI graphics.',
+                    help='Frame rate for GUI graphics. ' +
+                    'Should be a non - zero integer.',
                     action='store',
                     dest='frameRate',
                     type=int,

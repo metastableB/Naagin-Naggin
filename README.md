@@ -21,4 +21,24 @@ There is no documentation yet within the code, but it should be easy to follow. 
 
 Various agents have been included and can be enabled using the `--agent` flag.
 
+## Usage
+```
+usage: snakeGame.py [-h] [-a {ReflexAgent}]
+                    [-s {RandomFoodAgent,MaxManhattanFoodAgnet}] [-n] [-t]
+                    [-f FRAMERATE]
+
+Naagin-Nagging v0.1 - Applying Deep Q-Learning to Snake.
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -a {ReflexAgent}, --agent {ReflexAgent}
+                        Specify the agent to use for playing snake.
+  -s {RandomFoodAgent,MaxManhattanFoodAgnet}, --food-agent {RandomFoodAgent,MaxManhattanFoodAgnet}
+                        Specify the food agent to use.
+  -n, --no-graphics     Disable graphics and run silently.
+  -t, --text-graphics   Enable text graphics.
+  -f FRAMERATE, --frame-rate FRAMERATE
+                        Frame rate for GUI graphics. Should be a non - zero
+                        integer.
+```
 [previewReflexAgent]: dlsnake/preview/01_reflexAgent.gif "Logo Title Text 2"
