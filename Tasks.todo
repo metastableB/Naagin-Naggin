@@ -1,6 +1,7 @@
+This file is formatted for the `plaintasks` plugin (lots of love to you!) for Sublime Text 3. It is in markdown and any markdown editor should in principle be able to read/edit this file.
 Development:
  ☐ Document configuration options specified in config.py
- ☐ ArgParser
+ ✔ ArgParser @done (17-03-31 14:15)
  ✔ Snake with increasing length @done (17-03-30 02:42)
  ✔ Head differently colored @done (17-03-30 02:42)
  ✔ Prevent reverse moves @done (17-03-30 02:42)
@@ -23,6 +24,11 @@ Pertaining to Project:
     ☐ Adversary trying to place food in circular configurations formed by snake
     ☐ Adversary trying to place food near walls
   ☐ Implement adversarial search (minMax)
+  Won't do. Can't be done in any reasonable way as getting the valid
+  moves for such an adversary causes an infinite mutual recursion that can't
+  be reasonably resolved. A evaluation function can be used to resolve this,
+  but the number of moves the FoodAgent of its extensions can do are proportional
+  to N^2.
   ☐ Implement expectimax search
   ☐ Implement MDP based Q-Learning
   ☐ Implement grids + MDP based Q-learning

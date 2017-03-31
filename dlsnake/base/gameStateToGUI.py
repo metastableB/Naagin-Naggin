@@ -12,22 +12,22 @@ class GameStateToGUI:
     to a GUI representation
     '''
     '''
-    FIXME: This should be an argument
+    FIXME: These should be an arguments
     '''
-    frameRate = cfg.GAME_FRAME_RATE
     FOOD_COLOR = cfg.COLOR_GREEN
     SNAKE_BODY_COLOR = cfg.COLOR_BLUE
     SNAKE_HEAD_COLOR = cfg.COLOR_LIGHT_GREEN
     FONT_COLOR = cfg.COLOR_RED
     gameOverMessage = "Game Over!"
 
-    def __init__(self, gameState, cellWidth):
+    def __init__(self, gameState, cellWidth, frameRate=cfg.GAME_FRAME_RATE):
         '''
         The gameState object to attach to and the
         width of a single cell interms of its pixels
         '''
         self.gameState = gameState
         self.cellWidth = cellWidth
+        self.frameRate = frameRate
         self.canvasWidth = cellWidth * gameState.numXCell
         self.canvasHeight = cellWidth * gameState.numYCell
         self.gameDisplay = pygame.display.set_mode(

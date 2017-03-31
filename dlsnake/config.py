@@ -27,3 +27,8 @@ FOOD_CELL_VALUE = 1
 SNAKE_BODY_CELL_VALUE = 2
 SNAKE_HEAD_CELL_VALUE = 3
 
+
+# VERSIONING
+# FIXME: Figure out a way to automatically populate this
+# from git tags.
+VERSION_NUMBER = 0.1
