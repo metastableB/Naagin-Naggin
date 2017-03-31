@@ -33,21 +33,28 @@ Various agents have been included and can be enabled using the `--agent` flag.
 
 ## Usage
 ```
-usage: snakeGame.py [-h] [-a {ReflexAgent}]
-                    [-s {RandomFoodAgent,MaxManhattanFoodAgnet}] [-n] [-t]
-                    [-f FRAMERATE]
+usage: snakeGame.py [-h] [-a {ReflexAgent,MinMaxAgent}]
+                    [-s {RandomFoodAgent,MaxManhattanFoodAgent}] [-n] [-t]
+                    [-f FRAMERATE] [-z] [-c] [-d DEPTH]
 
 Naagin-Nagging v0.1 - Applying Deep Q-Learning to Snake.
 
 optional arguments:
   -h, --help            show this help message and exit
-  -a {ReflexAgent}, --agent {ReflexAgent}
+  -a {ReflexAgent,MinMaxAgent}, --agent {ReflexAgent,MinMaxAgent}
                         Specify the agent to use for playing snake.
-  -s {RandomFoodAgent,MaxManhattanFoodAgnet}, --food-agent {RandomFoodAgent,MaxManhattanFoodAgnet}
+  -s {RandomFoodAgent,MaxManhattanFoodAgent}, --food-agent {RandomFoodAgent,MaxManhattanFoodAgent}
                         Specify the food agent to use.
   -n, --no-graphics     Disable graphics and run silently.
   -t, --text-graphics   Enable text graphics.
   -f FRAMERATE, --frame-rate FRAMERATE
                         Frame rate for GUI graphics. Should be a non - zero
                         integer.
+  -z, --silent          Silently execute, no output to console and no
+                        graphics.
+  -c, --csv             Prints (score, length) csv value. Can be used along
+                        with the --silent flag.
+  -d DEPTH, --depth DEPTH
+                        Depth for searching. Only valid for MinMaxAgent.
+
 ```
