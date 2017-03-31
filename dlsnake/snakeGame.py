@@ -9,6 +9,7 @@ import pygame
 from dlsnake.base.gameStateToGUI import GameStateToGUI as toGUI
 from dlsnake.base.gameState import GameState
 from dlsnake.agents.reflexAgent import ReflexAgent
+from dlsnake.agents.minMaxAgent import MinMaxAgent
 from dlsnake.agents.foodAgent import RandomFoodAgent, MaxManhattanFoodAgent
 import dlsnake.config as cfg
 
@@ -63,10 +64,11 @@ def playGameAgent(gameState, guiDriver, agent,
     can be played using the arrow keys
     '''
     died = False
-    agent = agent()
     quitGame = False
+    print(agent.depth)
     enableGUI = guiDriver is not None and not silent
     enableTextGraphics = enableTextGraphics and not silent
+    input("Press any key to continue")
     while not died and not quitGame:
         if enableGUI:
             for event in pygame.event.get():
@@ -83,6 +85,7 @@ def playGameAgent(gameState, guiDriver, agent,
             print(gameState.getGrid())
             print()
         died = gameState.gameOver
+
     score = gameState.score
     snakeLen = len(gameState.snake.getSnakeCordinateList())
     if not silent:
@@ -98,12 +101,13 @@ def playGameAgent(gameState, guiDriver, agent,
 
 class ArgumentOptions:
     agentChoiceDict = {
-        'ReflexAgent': ReflexAgent
+        'ReflexAgent': ReflexAgent,
+        'MinMaxAgent': MinMaxAgent,
     }
     agentChoices = agentChoiceDict.keys()
     foodAgentChoiceDict = {
         'RandomFoodAgent': RandomFoodAgent,
-        'MaxManhattanFoodAgnet': MaxManhattanFoodAgent
+        'MaxManhattanFoodAgent': MaxManhattanFoodAgent
     }
     foodAgentChoices = foodAgentChoiceDict.keys()
 
@@ -155,6 +159,11 @@ def get_arguments():
                     default=False,
                     dest='csv',
                     action='store_true')
+    ap.add_argument('-d', '--depth',
+                    help='Depth for searching. Only valid for MinMaxAgent.',
+                    default=1,
+                    type=int,
+                    dest='depth')
     args = ap.parse_args()
     return args
 
@@ -166,6 +175,8 @@ def main():
     snakeAgent = args.agent
     if snakeAgent is not None:
         snakeAgent = ArgumentOptions.agentChoiceDict[snakeAgent]
+        snakeAgent = snakeAgent()
+        snakeAgent.depth = args.depth
     enableGUI = not args.noGraphics
     enableTextGraphics = args.textGraphics
     silent = False

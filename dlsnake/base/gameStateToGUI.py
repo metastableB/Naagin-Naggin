@@ -65,11 +65,14 @@ class GameStateToGUI:
             self.gameDisplay.blit(self.gameOverMessageSurface, pos)
 
     def __drawScore(self):
+        length = self.gameState.getSnakeLength()
+        scoreStr = "Len: " + str(length)
         score = self.gameState.getScore()
-        score = str(score)
+        scoreStr += "  Score: " + str(score)
+        score = str(scoreStr)
         self.scoresurface = self.scoreFont.render(
             score, False, self.FONT_COLOR)
-        pos_x = self.canvasWidth - 2 * self.cellWidth
+        pos_x = self.canvasWidth - 8 * self.cellWidth
         pos_y = 0.2 * self.cellWidth
         pos = (pos_x, pos_y)
         self.gameDisplay.blit(self.scoresurface, pos)

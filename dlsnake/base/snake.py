@@ -98,3 +98,6 @@ class Snake():
 
     def getCurrentDirection(self):
         return self.xspeed, self.yspeed
+
+    def getSnakeLength(self):
+        return len(self.cordinates)

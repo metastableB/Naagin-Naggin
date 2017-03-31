@@ -23,12 +23,10 @@ class GameState():
     ACTION_RIGHT = 'RIGHT'
     ACTION_UP = 'UP'
     ACTION_DOWN = 'DOWN'
-    ACTION_NONE = 'NONE'
     ALL_ACTIONS = [ACTION_LEFT,
                    ACTION_RIGHT,
                    ACTION_UP,
                    ACTION_DOWN,
-                   ACTION_NONE
                    ]
 
     def __init__(self, numXCell, numYCell, foodAgent=RandomFoodAgent):
@@ -145,11 +143,10 @@ class GameState():
         self.score += self.livingScore
         x, y = self.food.getFoodCordinate()
         if(snake.eat(x, y)):
+            self.food.newFood(None, None)
             if newFood:
                 fx, fy = self.foodAgent.getNextFoodCordinates(self)
                 self.food.newFood(fx, fy)
-            else:
-                self.food.newFood(None, None)
             self.score += self.foodScore
         return True
 
@@ -205,7 +202,7 @@ class GameState():
         '''
         foodCord = self.getFoodCordinate()
         if None in foodCord:
-            return self.foodAgent.getLegalActions()
+            return self.foodAgent.getLegalActions(self)
         else:
             return []
 
@@ -223,10 +220,10 @@ class GameState():
         return successorGameState
 
     def generateSnakeSuccessor(self, action):
-        return self.generateAgentSuccessor(self, 0, action)
+        return self.generateAgentSuccessor(0, action)
 
     def generateFoodAgentSuccessor(self, action):
-        return self.generateAgentSuccessor(self, 1, action)
+        return self.generateAgentSuccessor(1, action)
 
     def generateAgentSuccessor(self, agent, action):
         '''
@@ -244,8 +241,7 @@ class GameState():
             foodCord = self.getFoodCordinate()
             msg = 'There is no food on the grid!'
             msg += ' Did the foodAgent get a chance to act?'
-            assert None in foodCord, msg
-
+            assert None not in foodCord, msg
             successorGameState.chooseAction(action)
             successorGameState.executeAction(newFood=False)
             successorGameState.update()
@@ -254,10 +250,9 @@ class GameState():
             foodCord = self.getFoodCordinate()
             msg = 'There is food on the grid!'
             msg += ' Why is foodAgent trying to add more food?'
-            assert None in foodCord, msg
+            assert None in foodCord or foodCord == action, msg
             # We don't have food
-            fx, fy = successorGameState.foodAgent.getNextFoodCordinates(
-                successorGameState)
+            fx, fy = action
             successorGameState.food.newFood(fx, fy)
             successorGameState.update()
             return successorGameState
@@ -282,6 +277,9 @@ class GameState():
         '''
         return self.snake.getSnakeCordinateList()
 
+    def getSnakeLength(self):
+        return self.snake.getSnakeLength()
+
     def setFoodScore(self, value):
         '''
         Set the score the snake gets when
@@ -295,6 +293,7 @@ class GameState():
         each move, this value is added to the snake.
         '''
         self.livingScore = value
+
 
     '''
     PRIVATE METHODS

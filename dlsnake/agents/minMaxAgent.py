@@ -32,15 +32,18 @@ class MinMaxAgent(Agent):
         """
         agent = 0
         currentDepth = 1
-        legalMoves = gameState.getLegalSnakeActions()
-        max_val = float('-int')
+        legalMoves = gameState.getLegalActionsSnake()
+        max_val = float('-inf')
         max_action = None
         for action in legalMoves:
+            # print("At depth: %d Agent: %d Action: %s" % (currentDepth, agent, action))
             successorGameState = gameState.generateSnakeSuccessor(action)
-            v = self.getMin(successorGameState, currentDepth, agent)
+            v = self.getMin(successorGameState, currentDepth, agent + 1)
+            # print("At depth: %d Agent: %d Score: %f" %(currentDepth, agent, v))
             if v > max_val:
                 max_action = action
                 max_val = v
+        # print("Action Selected: %s" % max_action)
         return max_action
 
     def getMin(self, gameState, currentDepth, foodAgent):
@@ -51,9 +54,13 @@ class MinMaxAgent(Agent):
             return self.evaluationFunction(gameState)
         min_val = float('inf')
         legalMoves = gameState.getLegalActionsFoodAgent()
+        if not legalMoves:
+            legalMoves.append(gameState.getFoodCordinate())
         for action in legalMoves:
+            # print("MIN: At depth: %d Agent: %d Action: %s" % (currentDepth, foodAgent, action))
             successorGameState = gameState.generateFoodAgentSuccessor(action)
             v = self.getMax(successorGameState, currentDepth + 1, 0)
+            # print("MIN: At depth: %d Agent: %d Score: %f" % (currentDepth, foodAgent, v))
             if v < min_val:
                 min_val = v
         return min_val
@@ -63,39 +70,40 @@ class MinMaxAgent(Agent):
             raise ValueError("Agent is non-zero in max layer!")
 
         if gameState.gameOver or currentDepth > self.depth:
+            # print("Base Case in MAX")
             return self.evaluationFunction(gameState)
         max_val = float('-inf')
-        legalMoves = gameState.getLegalSnakeActions()
+        legalMoves = gameState.getLegalActionsSnake()
         for action in legalMoves:
+            # print("MAX: At depth: %d Agent: %d action: %s" % (currentDepth, agent, action))
             successorGameState = gameState.generateSnakeSuccessor(action)
             v = self.getMin(successorGameState, currentDepth, 1)
+            # print("MAX: At depth: %d Agent: %d Score: %f" % (currentDepth, agent, v))
             if v > max_val:
                 max_val = v
         return max_val
 
-    def evaluationFunction(self, currentGameState, action):
+    def evaluationFunction(self, gameState):
         """
         A simple evaluation function
         """
-        # Useful information you can extract from a GameState (pacman.py)
-        successorGameState = currentGameState.generateSnakeSuccessor(
-            action)
+        msg = "No food in current game state! Did you call the evaluation "
+        msg += "function in the correct order?"
+        assert None not in gameState.getFoodCordinate(), msg
         value = 0.0
-        newFood = successorGameState.getFoodCordinate()
-        newPos = successorGameState.getSnakeHeadCordinate()
-        newScore = successorGameState.getScore()
-        oldScore = currentGameState.getScore()
+        foodCord = gameState.getFoodCordinate()
+        snakePos = gameState.getSnakeHeadCordinate()
         from dlsnake.base.util import manhattanDistance
-        foodVicinityFactor = manhattanDistance(newPos, newFood)
-        scoreFactor = newScore - oldScore
+        foodVicinityFactor = 0
+        if None not in foodCord:
+            foodVicinityFactor = manhattanDistance(snakePos, foodCord)
         if foodVicinityFactor != 0:
             value += 1.0 / foodVicinityFactor
         else:
             value += 1.0
-        if scoreFactor != 0:
-            value += scoreFactor
-
+        scoreFactor = 0.1 * gameState.getScore()
+        value += scoreFactor
         # We don't obviously want to die
-        if successorGameState.gameOver:
+        if gameState.gameOver:
             value -= 10
         return value

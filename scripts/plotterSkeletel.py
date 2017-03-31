@@ -8,7 +8,7 @@
 import matplotlib.pyplot as plt
 import pandas as pd
 
-DATA_FILE = '../data/40_100_ReflexAgent_RandomFoodAgent.csv'
+DATA_FILE = '../data/20_100_ReflexAgent_RandomFoodAgent.csv'
 CELL_WIDTH = 20
 data = pd.read_csv(DATA_FILE, header=None)
 data.columns = ['Score', 'Length']

@@ -76,7 +76,7 @@ class RandomFoodAgent(FoodAgent):
         msg = 'FoodAgent.getNextFoodCordinates called even when '
         msg += 'food is already present!'
         # Make sure we are only called when there is no food
-        assert None not in gameState.getFoodCordinate(), msg
+        assert None in gameState.getFoodCordinate(), msg
         if self.X_MAX is None:
             self.X_MAX = gameState.numXCell
             self.X_MIN = 0
@@ -129,7 +129,7 @@ class MaxManhattanFoodAgent(FoodAgent):
         msg = 'FoodAgent.getNextFoodCordinates called even when '
         msg += 'food is already present!'
         # Make sure we are only called when there is no food
-        assert None not in gameState.getFoodCordinate(), msg
+        assert None in gameState.getFoodCordinate(), msg
 
         if self.X_MAX is None:
             self.X_MAX = gameState.numXCell

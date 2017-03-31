@@ -4,11 +4,11 @@
 #
 
 # Number of cells along width (+x) and height (+y)
-NUM_X_CELL = 10
-NUM_Y_CELL = 10
+NUM_X_CELL = 20
+NUM_Y_CELL = 20
 
 # Pixel width of cell (cells are squares)
-CELL_WIDTH = 20
+CELL_WIDTH = 30
 
 # Some color definitions
 COLOR_BLACK = (0, 0, 0)
