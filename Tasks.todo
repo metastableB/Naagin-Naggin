@@ -16,6 +16,7 @@ Development:
  ☐ Add some graphics which actually looks like head/tail
  ☐ Typo; replace all 'cordinate' with 'coordinates'
  ☐ Whenever a next action or related method is being called, check first if game is over!
+ ☐ Add a proper way to specify the dependency between certain search agents and the depth argument
 
 Pertaining to Project:
   ✔ Implement manual play @done (17-03-30 02:43)
@@ -26,7 +27,7 @@ Pertaining to Project:
     ☐ Adversary trying to place food near walls
   ☐ Implement adversarial search (minMax)
     ☐ Verify the algorithm in depth
-     There is a lot of nuts and bolts that can be loose.
+     There is a lot of nuts and bolts that can be loose. Analyze the algorithm especially since your hypothesis of minMax trees growing out of proportion turned out to be wrong.
   ☐ Implement expectimax search
   ☐ Implement MDP based Q-Learning
   ☐ Implement grids + MDP based Q-learning
