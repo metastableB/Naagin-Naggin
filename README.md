@@ -4,8 +4,9 @@ Using adverserial search, reinforcement learning and eventually deep-q learning 
 
 ## Preview
 
-Reflex-Agent:
-![A Simple Reflex-Agent playing Snake][previewReflexAgent]
+|Reflex-Agent | 
+|-------------|
+|<img src="dlsnake/preview/01_reflexAgent.gif" height="250" alt="A Simple Reflex-Agent playing Snake">|
 
 
 ## Installation
@@ -41,4 +42,3 @@ optional arguments:
                         Frame rate for GUI graphics. Should be a non - zero
                         integer.
 ```
-[previewReflexAgent]: dlsnake/preview/01_reflexAgent.gif "Logo Title Text 2"
