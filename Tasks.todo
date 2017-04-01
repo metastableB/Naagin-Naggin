@@ -35,6 +35,11 @@ Pertaining to Project:
      There is a lot of nuts and bolts that can be loose. Analyze the algorithm
      especially since your hypothesis of minMax trees growing out of proportion
      turned out to be wrong.
+     ☐ Implement Alpha-Beta Pruning
+     ☐ Implement a variation wherein the living penalty and food scores are the only rewards.
+     That is, replace the evaluation function used at the terminal state with 0 and instead
+     assign values to actions. All non-food eating action gets -1 and all food eating actions
+     get +50.
   ☐ Implement expectimax search
   Won't do.
   ☐ Implement MDP based Q-Learning
