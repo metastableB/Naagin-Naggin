@@ -43,7 +43,6 @@ def playGameUser(gameState, gui, enableText=False):
         if len(eventList) is not 0:
             gameState.chooseAction(eventList[-1])
         gameState.executeAction()
-        gameState.update()
         died = gameState.gameOver
         gui.show()
         if enableText:
@@ -76,7 +75,6 @@ def playGameAgent(gameState, guiDriver, agent,
         action = agent.getAction(gameState)
         gameState.chooseAction(action)
         gameState.executeAction()
-        gameState.update()
         if enableGUI:
             guiDriver.show()
         if enableTextGraphics:

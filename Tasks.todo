@@ -18,10 +18,11 @@ Development:
  ☐ Typo; replace all 'cordinate' with 'coordinates'
  ☐ Whenever a next action or related method is being called, check first if game is over!
  ☐ Add a proper way to specify the dependency between certain search agents and the depth argument
- ☐ PRIORITY: Modify `dlsnake.base.gameState` to use lazy evaluation for grid creation.
+ ✔ PRIORITY: Modify `dlsnake.base.gameState` to use lazy evaluation for grid creation. @done (17-04-02 01:05)
  Technically, grid construction is unnecessary for the logic to work 
  and this lazy evaluation can significantly speed things up.
  ☐ `--csv` and `--silent` options seem to be broken. Investigate.
+ ☐ Add flag to save pygame rendered images to folder.
 
 Pertaining to Project:
   ✔ Implement manual play @done (17-03-30 02:43)
