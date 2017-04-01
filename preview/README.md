@@ -52,3 +52,20 @@ Time Output:
 
 
 Depth=6
+
+**03.gif**
+Grid Size:20x20
+Cell Size:30
+Food Score:50
+Living Score:-1
+Snake Agent: MinMax Agent
+Food Agent: MaxManhattanFoodAgent
+Score: 2277
+SnakeLen: 82
+Time Output:
+```
+    real    3m14.091s
+    user    0m26.693s
+    sys 0m2.413s
+```
+Depth: 1
