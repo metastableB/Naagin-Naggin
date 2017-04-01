@@ -1,23 +1,26 @@
-This file is formatted for the `plaintasks` plugin (lots of love to you!) for Sublime Text 3. It is in markdown and any markdown editor should in principle be able to read/edit this file.
+This file is formatted for the `plaintasks` plugin (lots of love to you!) for Sublime Text 3.
+It is in markdown and any markdown editor should in principle be able to read/edit this file.
 Development:
  ☐ Document configuration options specified in config.py
  ✔ ArgParser @done (17-03-31 14:15)
  ✔ Snake with increasing length @done (17-03-30 02:42)
  ✔ Head differently colored @done (17-03-30 02:42)
  ✔ Prevent reverse moves @done (17-03-30 02:42)
- ☐ Fix toggling between GUI and non GUI versions 
+ ✔ Fix toggling between GUI and non GUI versions @done (17-04-01 14:54)
  ✔ Move score, foodScore and livingScore to gameState @done (17-03-30 02:42)
  ✔ Check if food is valid @done (17-03-30 02:43)
  ✔ Check if update causes death @done (17-03-30 02:43)
  ☐ Special power food
- ☐ Add border to cells
+ ✔ Add border to cells @done (17-04-01 14:54)
  ✔ Add gameover message @done (17-03-30 02:43)
  ☐ Add walls
  ☐ Add some graphics which actually looks like head/tail
  ☐ Typo; replace all 'cordinate' with 'coordinates'
  ☐ Whenever a next action or related method is being called, check first if game is over!
  ☐ Add a proper way to specify the dependency between certain search agents and the depth argument
- ☐ PRIORITY: Modify `dlsnake.base.gameState` to use lazy evaluation for grid creation. Technically, grid construction is unnecessary for the logic to work and this lazy evaluation can significantly speed things up.
+ ☐ PRIORITY: Modify `dlsnake.base.gameState` to use lazy evaluation for grid creation.
+ Technically, grid construction is unnecessary for the logic to work 
+ and this lazy evaluation can significantly speed things up.
  ☐ `--csv` and `--silent` options seem to be broken. Investigate.
 
 Pertaining to Project:
@@ -27,10 +30,13 @@ Pertaining to Project:
     ✔ Adversary maximizing Manhattan distance from snake @done (17-03-30 04:06)
     ☐ Adversary trying to place food in circular configurations formed by snake
     ☐ Adversary trying to place food near walls
-  ☐ Implement adversarial search (minMax)
-    ☐ Verify the algorithm in depth
-     There is a lot of nuts and bolts that can be loose. Analyze the algorithm especially since your hypothesis of minMax trees growing out of proportion turned out to be wrong.
+  ✔ Implement adversarial search (minMax) @done (17-04-01 14:54)
+    ✔ Verify the algorithm in depth @done (17-04-01 14:55)
+     There is a lot of nuts and bolts that can be loose. Analyze the algorithm
+     especially since your hypothesis of minMax trees growing out of proportion
+     turned out to be wrong.
   ☐ Implement expectimax search
+  Won't do.
   ☐ Implement MDP based Q-Learning
   ☐ Implement grids + MDP based Q-learning
   ☐ Train an image based Q-learning agent
