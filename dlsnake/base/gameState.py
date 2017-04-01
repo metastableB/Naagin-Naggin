@@ -42,11 +42,12 @@ class GameState():
         '''
         self.numXCell = numXCell
         self.numYCell = numYCell
-        self.grid = self.__empty_grid()
+        # WARNING: DO NOT DIRECTLY ACCESS GRID
+        # use getGrid() instead.
+        self.__grid = None
         self.food = food.Food(numXCell, numYCell)
         self.snake = snake.Snake(0, 0, numXCell, numYCell)
         self.foodAgent = foodAgent()
-        self.update()
         self.score = 0
         self.foodScore = 50
         self.livingScore = -1
@@ -57,10 +58,11 @@ class GameState():
         Returns a string containing the
         current grid configuration.
         '''
+        self.__updateGrid()
         w = self.numXCell
         h = self.numYCell
         s = ''
-        grid = self.grid
+        grid = self.__grid
         for x in range(0, h):
             for y in range(0, w):
                 s += str(grid[x][y])
@@ -150,32 +152,6 @@ class GameState():
             self.score += self.foodScore
         return True
 
-    def update(self):
-        '''
-        Updates the internal grid configuration
-        based on the snake and food positions.
-        Call this after all actions that can potentially
-        alter the grid configuration.
-        '''
-        self.grid = self.__empty_grid()
-        grid = self.grid
-        cords = self.food.getFoodCordinate()
-        if None not in cords:
-            positions = self.__cordsToIndex([cords])
-            for pos in positions:
-                r_, c_ = pos
-                grid[r_][c_] = self.FOOD_CELL_VALUE
-        cords = self.snake.getSnakeCordinateList()
-        positions = self.__cordsToIndex(cords)
-        for pos in positions:
-            r_, c_ = pos
-            grid[r_][c_] = self.SNAKE_BODY_CELL_VALUE
-        cords = self.snake.getHead()
-        pos = self.__cordsToIndex([cords])
-        r_, c_ = pos[0]
-        grid[r_][c_] = self.SNAKE_HEAD_CELL_VALUE
-        self.grid = grid
-
     def getScore(self):
         return self.score
 
@@ -216,7 +192,6 @@ class GameState():
         successorGameState = copy.deepcopy(self)
         successorGameState.chooseAction(action)
         successorGameState.executeAction()
-        successorGameState.update()
         return successorGameState
 
     def generateSnakeSuccessor(self, action):
@@ -244,7 +219,6 @@ class GameState():
             assert None not in foodCord, msg
             successorGameState.chooseAction(action)
             successorGameState.executeAction(newFood=False)
-            successorGameState.update()
             return successorGameState
         elif agent == 1:
             foodCord = self.getFoodCordinate()
@@ -254,7 +228,6 @@ class GameState():
             # We don't have food
             fx, fy = action
             successorGameState.food.newFood(fx, fy)
-            successorGameState.update()
             return successorGameState
 
     def getFoodCordinate(self):
@@ -294,7 +267,6 @@ class GameState():
         '''
         self.livingScore = value
 
-
     '''
     PRIVATE METHODS
     '''
@@ -318,6 +290,37 @@ class GameState():
             ret.append((y, x))
         return ret
 
+    def __updateGrid(self):
+        '''
+        This method is private to facillitate lazy evaluation.
+        getGrid() should be used as the interface for viewing
+        the updated grid. getGrid() automatically calls
+        this method internally.
+
+        Updates the internal grid configuration
+        based on the snake and food positions.
+        Call this after all actions that can potentially
+        alter the grid configuration.
+        '''
+        self.__grid = self.__empty_grid()
+        grid = self.__grid
+        cords = self.food.getFoodCordinate()
+        if None not in cords:
+            positions = self.__cordsToIndex([cords])
+            for pos in positions:
+                r_, c_ = pos
+                grid[r_][c_] = self.FOOD_CELL_VALUE
+        cords = self.snake.getSnakeCordinateList()
+        positions = self.__cordsToIndex(cords)
+        for pos in positions:
+            r_, c_ = pos
+            grid[r_][c_] = self.SNAKE_BODY_CELL_VALUE
+        cords = self.snake.getHead()
+        pos = self.__cordsToIndex([cords])
+        r_, c_ = pos[0]
+        grid[r_][c_] = self.SNAKE_HEAD_CELL_VALUE
+        self.__grid = grid
+
 
 def demo():
     gs = GameState(5, 4)
@@ -326,22 +329,18 @@ def demo():
     print()
     gs.chooseAction('LEFT')
     gs.executeAction()
-    gs.update()
     print(gs.getGrid())
     print()
     gs.chooseAction('LEFT')
     gs.executeAction()
-    gs.update()
     print(gs.getGrid())
     print()
     gs.chooseAction('LEFT')
     gs.executeAction()
-    gs.update()
     print(gs.getGrid())
     print()
     gs.chooseAction('LEFT')
     gs.executeAction()
-    gs.update()
     print(gs.getGrid())
     print()
 
