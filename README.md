@@ -17,7 +17,8 @@ Time-User (40 runs)| 0m6.547s | (approx)\* 4 Hour|
 Time-System (40 runs)| 0m0.980s | (approx)\* 4 Hour|
 Misc| None|  Depth=6
 
-\*:*The latest implementation using a lazy-evaluation technique has brought this down to 40 minutes. New data coming up soon!*
+\* *The latest implementation using a lazy-evaluation technique has brought this down to 40 minutes. New data coming up soon!*
+
 
 ## Installation
 >The module uses `python3` and has `Keras` with `Theano` backend installed from their upstream git repository as the pip package was not up-to-date. If you face problems with Keras during the installation procedure, revert back to the version specified in the `requirements.txt`. 
