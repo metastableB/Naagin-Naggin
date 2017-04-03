@@ -23,6 +23,8 @@ Development:
  and this lazy evaluation can significantly speed things up.
  ☐ `--csv` and `--silent` options seem to be broken. Investigate.
  ☐ Add flag to save pygame rendered images to folder.
+ ☐ Create a separate script to train on multiple threads.
+ ☐ Figure out how to dump and load trained data and game episodes.
 
 Pertaining to Project:
   ✔ Implement manual play @done (17-03-30 02:43)
@@ -44,5 +46,7 @@ Pertaining to Project:
   ☐ Implement expectimax search
   Won't do.
   ☐ Implement MDP based Q-Learning
+  ☐ Implement MDP based approximate Q-learning
+  ☐ Implement Feature based approximate Q-learning
   ☐ Implement grids + MDP based Q-learning
-  ☐ Train an image based Q-learning agent
+  ☐ Extract features from deep learning.

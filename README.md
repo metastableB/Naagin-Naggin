@@ -14,7 +14,7 @@ Mean Score| 1645.450|1857.575|
 Mean Snake Length | 59.125| 47.400|
 Time-Real (40 runs)| 1m14.105s | (approx)\* 4 Hour|
 Time-User (40 runs)| 0m6.547s | (approx)\* 4 Hour|
-Time-System (40 runs)| 0m0.980s | (approx)\* 4 Hour|
+Time-System (40 runs)| 0m0.980s | (approx)\* 0 Hour|
 Misc| None|  Depth=6
 
 \* *The latest implementation using a lazy-evaluation technique has brought this down to 40 minutes. New data coming up soon!*
