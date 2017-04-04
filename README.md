@@ -37,7 +37,8 @@ Various agents have been included and can be enabled using the `--agent` flag.
 ```
 usage: snakeGame.py [-h] [-a {ReflexAgent,MinMaxAgent}]
                     [-s {RandomFoodAgent,MaxManhattanFoodAgent}] [-n] [-t]
-                    [-f FRAMERATE] [-z] [-c] [-d DEPTH]
+                    [-f FRAMERATE] [-z] [-m SIMULATE] [-y NUM_THREADS]
+                    [-d DEPTH] [-c]
 
 Naagin-Nagging v0.1 - Applying Deep Q-Learning to Snake.
 
@@ -54,9 +55,15 @@ optional arguments:
                         integer.
   -z, --silent          Silently execute, no output to console and no
                         graphics.
-  -c, --csv             Prints (score, length) csv value. Can be used along
-                        with the --silent flag.
+  -m SIMULATE, --simulate SIMULATE
+                        Run specified number of simulations on each thread and
+                        echo output (length, score) to console. Can be multi-
+                        threaded using --thread
+  -y NUM_THREADS, --num-threads NUM_THREADS
+                        Specify the number of threads to use when in
+                        simulation mode.
   -d DEPTH, --depth DEPTH
                         Depth for searching. Only valid for MinMaxAgent.
+  -c, --csv             Echo output in CSV format (length, score).
 
 ```
