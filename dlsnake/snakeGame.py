@@ -12,6 +12,7 @@ from dlsnake.agents.reflexAgent import ReflexAgent
 from dlsnake.agents.minMaxAgent import MinMaxAgent
 from dlsnake.agents.foodAgent import RandomFoodAgent, MaxManhattanFoodAgent
 import dlsnake.config as cfg
+import multiprocessing
 
 FRAME_RATE = cfg.GAME_FRAME_RATE
 VERSION = cfg.VERSION_NUMBER
@@ -51,7 +52,6 @@ def playGameUser(gameState, gui, enableText=False):
     if not quitGame:
         time.sleep(1)
     pygame.quit()
-    quit()
 
 
 def playGameAgent(gameState, guiDriver, agent,
@@ -93,8 +93,8 @@ def playGameAgent(gameState, guiDriver, agent,
         print('%d, %d' % (score, snakeLen))
         import sys
         sys.stdout.flush()
-    pygame.quit()
-    quit()
+    if guiDriver is not None:
+        pygame.quit()
 
 
 class ArgumentOptions:
@@ -151,23 +151,42 @@ def get_arguments():
                     action='store_true',
                     default=False,
                     dest='silent')
-    ap.add_argument('-c', '--csv',
-                    help='Prints (score, length) csv value. Can be used' +
-                    ' along with the --silent flag.',
-                    default=False,
-                    dest='csv',
-                    action='store_true')
+    ap.add_argument('-m', '--simulate',
+                    help='Run specified number of simulations on ' +
+                    'each thread and ' +
+                    'echo output (length, score) to console. Can be' +
+                    ' multi-threaded using --thread',
+                    default=0,
+                    dest='simulate',
+                    action='store',
+                    type=int)
+    ap.add_argument('-y', '--num-threads',
+                    help='Specify the number of threads to use when' +
+                    ' in simulation mode.',
+                    default=1,
+                    dest='num_threads',
+                    action='store',
+                    type=int)
     ap.add_argument('-d', '--depth',
                     help='Depth for searching. Only valid for MinMaxAgent.',
                     default=1,
                     type=int,
                     dest='depth')
+    ap.add_argument('-c', '--csv',
+                    help='Echo output in CSV format (length, score).',
+                    default=False,
+                    dest='csv',
+                    action='store_true')
     args = ap.parse_args()
     return args
 
 
-def main():
-    args = get_arguments()
+def run(args):
+    '''
+    Runs a single instance of the game. This is a conjugate
+    to the simulate(args) method which (can) run multiple threaded
+    instances of the game and echo outputs to console.
+    '''
     foodAgent = args.foodAgent
     foodAgent = ArgumentOptions.foodAgentChoiceDict[foodAgent]
     snakeAgent = args.agent
@@ -200,7 +219,58 @@ def main():
     else:
         playGameAgent(gameState, guiDriver, snakeAgent,
                       enableTextGraphics, silent,
-                      csvOut)
+                      csvOut = csvOut)
+
+
+def simulate(args):
+    '''
+    Run multiple threads of the game and echo output
+    to console. FIXME: run and simulate can be merged,
+    run() is just the base case for simulate.
+    '''
+    # Run N number of threads
+    # and simulate K times on each thread
+    numRuns = args.simulate
+    while numRuns > 0:
+        foodAgent = args.foodAgent
+        foodAgent = ArgumentOptions.foodAgentChoiceDict[foodAgent]
+        snakeAgent = args.agent
+        if snakeAgent is not None:
+            snakeAgent = ArgumentOptions.agentChoiceDict[snakeAgent]
+            snakeAgent = snakeAgent()
+            snakeAgent.depth = args.depth
+        enableTextGraphics = False
+        silent = True
+        csvOut = True
+        gameState = GameState(cfg.NUM_X_CELL, cfg.NUM_Y_CELL,
+                              foodAgent=foodAgent)
+        playGameAgent(gameState, None, snakeAgent,
+                      enableTextGraphics, silent,
+                      csvOut = csvOut)
+        numRuns -= 1
+
+
+def main():
+    args = get_arguments()
+    if args.simulate == 0:
+        run(args)
+    else:
+        # We thread
+        numThreads = args.num_threads
+        jobs = []
+        for i in range(0, numThreads):
+            process = multiprocessing.Process(target=simulate, args=(args,))
+            jobs.append(process)
+            
+        # Start simulations
+        for job in jobs:
+            job.start()
+
+        # Make sure all runs have finished
+        for job in jobs:
+            job.join()
+        # Done
+
 
 
 if __name__ == '__main__':
