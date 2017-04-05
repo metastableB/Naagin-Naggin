@@ -10,6 +10,7 @@
 #
 
 import time
+import sys
 import pygame
 import copy
 import dlsnake.config as cfg
@@ -23,54 +24,63 @@ VERSION = cfg.VERSION_NUMBER
 
 
 def main():
-    gameState = GameState(cfg.NUM_X_CELL, cfg.NUM_Y_CELL,
-                          foodAgent=MaxManhattanFoodAgent)
     gui = True
-    if gui:
-        guiDriver = toGUI(gameState, cfg.CELL_WIDTH, FRAME_RATE)
-
-    agent = ApproxQAgent(alpha=0.9, gamma=0.99, epsilon=0.5,
-                         featureExtractor=SimpleFeatureExtractor)
     died = False
     quitGame = False
     silent = False
     enableTextGraphics = False
-    enableGUI = gui is not None and not silent
-    csvOut = False
+    enableGUI = gui and not silent
     enableTextGraphics = enableTextGraphics and not silent
-    while not died and not quitGame:
-        if enableGUI:
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    quitGame = True
-                    break
-        action = agent.getAction(gameState)
-        print("action: ", action)
-        currGameState = copy.deepcopy(gameState)
-        gameState.chooseAction(action)
-        gameState.executeAction()
-        nextGameState = copy.deepcopy(gameState)
-        reward = nextGameState.score - currGameState.score
-        agent.update(currGameState, action, reward, nextGameState)
-        if enableGUI:
-            guiDriver.show()
-        if enableTextGraphics:
-            print(gameState.getGrid())
-            print()
-        died = gameState.gameOver
-        print('weights: ', agent.getWeights())
+    numTrials = 1000
+    i = 0
+    weights = None
+    while i < numTrials:
+        ep = (numTrials - i) / numTrials
+        al = (numTrials - i) / numTrials
+        print(ep)
+        gameState = GameState(cfg.NUM_X_CELL, cfg.NUM_Y_CELL,
+                              foodAgent=MaxManhattanFoodAgent)
+        if gui:
+            guiDriver = toGUI(gameState, cfg.CELL_WIDTH, FRAME_RATE)
+        agent = ApproxQAgent(alpha=0.009, gamma=0.99, epsilon=0.5,
+                             featureExtractor=SimpleFeatureExtractor,
+                             weights = weights)
+        died = False
+        gameState.setFoodScore(500)
+        while not died and not quitGame:
+            if enableGUI:
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        quitGame = True
+                        break
+            action = agent.getAction(gameState)
+            print("action: ", action)
+            currGameState = copy.deepcopy(gameState)
+            gameState.chooseAction(action)
+            gameState.executeAction()
+            nextGameState = copy.deepcopy(gameState)
+            reward = nextGameState.score - currGameState.score
+            print(reward)
+            agent.update(currGameState, action, reward, nextGameState)
+            if enableGUI:
+                guiDriver.show()
+            if enableTextGraphics:
+                print(gameState.getGrid())
+                print()
+            died = gameState.gameOver
+            weights = agent.weights
+            print(weights)
+            # input('continue')
+            # print('weights: ', agent.getWeights())
+            input('Continue?')
 
-    score = gameState.score
-    snakeLen = len(gameState.snake.getSnakeCordinateList())
-    if not silent:
-        print("Game Over!")
-        print("Score: %d" % score)
-        print("SnakeLen: %d" % snakeLen)
-        time.sleep(2)
-    if csvOut:
-        print('%d, %d' % (score, snakeLen))
-        import sys
-        sys.stdout.flush()
+        i += 1
+        if i % 100 == 0:
+            score = gameState.score
+            snakeLen = len(gameState.snake.getSnakeCordinateList())
+            print("Game Over!")
+            print("\tScore: %d" % score)
+            print("\tSnakeLen: %d" % snakeLen)
     if guiDriver is not None:
         pygame.quit()
 

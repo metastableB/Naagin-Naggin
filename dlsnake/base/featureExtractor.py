@@ -44,12 +44,10 @@ class SimpleFeatureExtractor(FeatureExtractor):
         snakePos = successorGameState.getSnakeHeadCordinate()
         from dlsnake.base.util import manhattanDistance
         foodVicinityFactor = manhattanDistance(foodPos, snakePos)
-
-        oldScore = gameState.score
+        foodVicinityFactor = 1 / foodVicinityFactor
         newScore = successorGameState.score
-        gain = newScore - oldScore
-        return {self.FOOD_VICINITY: foodVicinityFactor,
-                self.SCORE_FACTOR: gain}
+        return {self.FOOD_VICINITY: 0,
+                self.SCORE_FACTOR: newScore}
 
 
 if __name__ == '__main__':

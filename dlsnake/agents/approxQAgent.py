@@ -17,11 +17,14 @@ class ApproxQAgent(Agent):
         self.epsilon = args['epsilon']
         self.featExtractor = args['featureExtractor']
         self.featExtractor = self.featExtractor()
-        self.weights = {}
-        for f in self.featExtractor.getFeatureKeys():
-            self.weights[f] = 0.0
+        self.weights = args['weights']
+        if not self.weights:
+            print("GOT NONE")
+            self.weights = {}
+            for f in self.featExtractor.getFeatureKeys():
+                self.weights[f] = random.uniform(0, 1)
 
-    def getAction(self, gameState, epsilon=0.0):
+    def getAction(self, gameState):
         """
         Returns the next action to take from the
         current state after looking at all q-states
@@ -32,8 +35,9 @@ class ApproxQAgent(Agent):
         if not legalMoves:
             raise ValueError("There are no legal moves!" +
                              " How is this possible!")
-        # Choose one of the best actions
-        if random.uniform(0, epsilon):
+        rand = random.uniform(0, 1)
+        epsilon = self.epsilon
+        if (rand < epsilon):
             return random.choice(legalMoves)
         return self.computeActionFromQValues(gameState)
 
@@ -80,6 +84,10 @@ class ApproxQAgent(Agent):
         alpha = self.alpha
         difference = reward
         difference += gamma * self.computeValueFromQValues(nextGameState)
+        print(difference)
+        print(currGameState.getGrid())
+        print()
+        print(nextGameState.getGrid())
         features = self.featExtractor.getFeatures(currGameState, action)
         for f in features:
             self.weights[f] += alpha * difference * features[f]

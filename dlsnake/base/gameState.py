@@ -146,6 +146,9 @@ class GameState():
                 fx, fy = self.foodAgent.getNextFoodCordinates(self)
                 self.food.newFood(fx, fy)
             self.score += self.foodScore
+        if(self.score < -10):
+            self.gameOver = True
+            return False
         return True
 
     def getScore(self):
