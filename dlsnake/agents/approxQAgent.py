@@ -6,7 +6,7 @@ import random
 from dlsnake.agents.agent import Agent
 
 
-class approxQAgent(Agent):
+class ApproxQAgent(Agent):
     '''
     Approximate Q learning agent
     '''
@@ -16,7 +16,10 @@ class approxQAgent(Agent):
         self.gamma = args['gamma']
         self.epsilon = args['epsilon']
         self.featExtractor = args['featureExtractor']
-        self.weights = self.featExtractor.getWeightDict()
+        self.featExtractor = self.featExtractor()
+        self.weights = {}
+        for f in self.featExtractor.getFeatureKeys():
+            self.weights[f] = 0.0
 
     def getAction(self, gameState, epsilon=0.0):
         """
@@ -41,22 +44,30 @@ class approxQAgent(Agent):
             q += features[f] * self.weights[f]
         return q
 
-    def compulteActionFromQValues(self, gameState):
-        legalMoves = gameState.getLegalActions()
+    def computeActionFromQValues(self, gameState):
+        legalMoves = gameState.getLegalActionsSnake()
         if not legalMoves:
             # FIXME: Check for game over
             raise ValueError('No legal Actions!')
-        qvalues = [self.getQValue(gameState, action) for action in legalMoves]
-        maxq = max(qvalues)
+        # NOTE: getQValue, which internally calls
+        # featExtractor.getFeatures() need not return the same
+        # value each time.
+        qval_action = [(self.getQValue(gameState, action), action)
+                       for action in legalMoves]
+        print(qval_action)
+        qvals = [i[0] for i in qval_action]
+        maxq = max(qvals)
+        print("MAX ", maxq)
         possibleMoves = []
-        for action in legalMoves:
-            if abs(self.getQValue(gameState, action) - maxq) <= 0.0000001:
+        for val, action in qval_action:
+            if abs(val - maxq) <= 0.0000001:
                 possibleMoves.append(action)
+        print('Possible Moves ', possibleMoves)
         return random.choice(possibleMoves)
 
     def computeValueFromQValues(self, gameState):
         values = []
-        legalMoves = gameState.getLegalActions()
+        legalMoves = gameState.getLegalActionsSnake()
         if not legalMoves:
             raise ValueError('No legal Actions!')
         for action in legalMoves:
@@ -64,10 +75,9 @@ class approxQAgent(Agent):
             values.append(q)
         return max(values)
 
-    def update(self, currGameState, action, nextGameState):
+    def update(self, currGameState, action, reward, nextGameState):
         gamma = self.gamma
         alpha = self.alpha
-        reward = nextGameState['Score'] - currGameState['Score']
         difference = reward
         difference += gamma * self.computeValueFromQValues(nextGameState)
         features = self.featExtractor.getFeatures(currGameState, action)
@@ -79,3 +89,6 @@ class approxQAgent(Agent):
 
     def getValue(self, gameStateRep):
         return self.computeValueFromQValues(gameStateRep)
+
+    def getWeights(self):
+        return self.weights

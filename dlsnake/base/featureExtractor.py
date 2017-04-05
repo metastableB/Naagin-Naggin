@@ -2,6 +2,7 @@
 # @author:Don Dennis (metastableB)
 # featureExtractor.py
 #
+import random
 
 
 class FeatureExtractor():
@@ -30,12 +31,25 @@ class SimpleFeatureExtractor(FeatureExtractor):
     '''
     A very simple feature extractor for approx Q-learning.
     '''
+    FOOD_VICINITY = 'Simple Food Vicinity'
+    SCORE_FACTOR = 'Score Factor'
+    FACTORS = [FOOD_VICINITY, SCORE_FACTOR]
 
     def __init__(self):
-        self.featureKeys = ['Circular Manhattan Index']
+        self.featureKeys = self.FACTORS
 
-    def getFeatures(self, gameState):
-        return 0.0
+    def getFeatures(self, gameState, action):
+        successorGameState = gameState.generateSuccessor(action)
+        foodPos = successorGameState.getFoodCordinate()
+        snakePos = successorGameState.getSnakeHeadCordinate()
+        from dlsnake.base.util import manhattanDistance
+        foodVicinityFactor = manhattanDistance(foodPos, snakePos)
+
+        oldScore = gameState.score
+        newScore = successorGameState.score
+        gain = newScore - oldScore
+        return {self.FOOD_VICINITY: foodVicinityFactor,
+                self.SCORE_FACTOR: gain}
 
 
 if __name__ == '__main__':
