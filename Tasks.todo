@@ -23,7 +23,7 @@ Development:
  and this lazy evaluation can significantly speed things up.
  ☐ `--csv` and `--silent` options seem to be broken. Investigate.
  ☐ Add flag to save pygame rendered images to folder.
- ☐ Create a separate script to train on multiple threads.
+ ✔ Create a separate script to simulate on multiple threads. @done (17-04-05 21:35)
  ☐ Figure out how to dump and load trained data and game episodes.
 
 Pertaining to Project:
@@ -43,10 +43,8 @@ Pertaining to Project:
      That is, replace the evaluation function used at the terminal state with 0 and instead
      assign values to actions. All non-food eating action gets -1 and all food eating actions
      get +50.
-  ☐ Implement expectimax search
+  ✔ Implement expectimax search @done (17-04-05 21:33)
   Won't do.
-  ☐ Implement MDP based Q-Learning
-  ☐ Implement MDP based approximate Q-learning
+  ✔ Implement MDP based Q-Learning. Won't do @done (17-04-05 21:33)
   ☐ Implement Feature based approximate Q-learning
-  ☐ Implement grids + MDP based Q-learning
   ☐ Extract features from deep learning.
