@@ -42,9 +42,6 @@ class GameState():
         '''
         self.numXCell = numXCell
         self.numYCell = numYCell
-        # WARNING: DO NOT DIRECTLY ACCESS GRID
-        # use getGrid() instead.
-        self.__grid = None
         self.food = food.Food(numXCell, numYCell)
         self.snake = snake.Snake(0, 0, numXCell, numYCell)
         self.foodAgent = foodAgent()
@@ -58,11 +55,10 @@ class GameState():
         Returns a string containing the
         current grid configuration.
         '''
-        self.__updateGrid()
+        grid = self.__getUpdatedGrid()
         w = self.numXCell
         h = self.numYCell
         s = ''
-        grid = self.__grid
         for x in range(0, h):
             for y in range(0, w):
                 s += str(grid[x][y])
@@ -253,21 +249,6 @@ class GameState():
     def getSnakeLength(self):
         return self.snake.getSnakeLength()
 
-    def getRepresentation(self):
-        '''
-        Return a touple (snake, food, score) which
-        is a representation of the gameState. This
-        can be (and is) used by learning agents
-        or evaluation functions to calculate features.
-        snake: self.getSnakeCordinates()
-        food: self.getFoodCordinate()
-        score: self.getScore()
-        '''
-        snake = self.getSnakeCordinates()
-        food = self.getFoodCordinate()
-        score = self.getScore()
-        return (snake, food, score)
-
     def setFoodScore(self, value):
         '''
         Set the score the snake gets when
@@ -305,7 +286,7 @@ class GameState():
             ret.append((y, x))
         return ret
 
-    def __updateGrid(self):
+    def __getUpdatedGrid(self):
         '''
         This method is private to facillitate lazy evaluation.
         getGrid() should be used as the interface for viewing
@@ -317,8 +298,7 @@ class GameState():
         Call this after all actions that can potentially
         alter the grid configuration.
         '''
-        self.__grid = self.__empty_grid()
-        grid = self.__grid
+        grid = self.__empty_grid()
         cords = self.food.getFoodCordinate()
         if None not in cords:
             positions = self.__cordsToIndex([cords])
@@ -334,7 +314,7 @@ class GameState():
         pos = self.__cordsToIndex([cords])
         r_, c_ = pos[0]
         grid[r_][c_] = self.SNAKE_HEAD_CELL_VALUE
-        self.__grid = grid
+        return grid
 
 
 def demo():
@@ -367,6 +347,7 @@ def demo():
     print("Successor")
     print(succ.getGrid())
     print()
+    print(dir(gs))
 
 
 if __name__ == "__main__":
