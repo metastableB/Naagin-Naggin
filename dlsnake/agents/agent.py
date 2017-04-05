@@ -20,7 +20,7 @@ class Agent:
         '''
         pass
 
-    def update(self, currGameStateRep, action, nextGameStateRep):
+    def update(self, currGameState, action, reward, nextGameState):
         '''
         Used for Q-learning and approximate q-learning
         based agents, wherein after each action, we have
