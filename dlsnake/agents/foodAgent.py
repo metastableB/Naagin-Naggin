@@ -213,3 +213,4 @@ class MaxManhattanFoodAgent(FoodAgent):
         if fy > self.Y_MAX - fy:
             y = -1
         return (fx + x, fy + y)
+

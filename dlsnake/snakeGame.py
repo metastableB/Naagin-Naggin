@@ -140,7 +140,7 @@ def get_arguments():
                     dest='textGraphics')
     ap.add_argument('-f', '--frame-rate',
                     help='Frame rate for GUI graphics. ' +
-                    'Should be a non - zero integer.',
+                    'Should be a non-zero integer.',
                     action='store',
                     dest='frameRate',
                     type=int,
@@ -261,7 +261,6 @@ def main():
         for i in range(0, numThreads):
             process = multiprocessing.Process(target=simulate, args=(args,))
             jobs.append(process)
-            
         # Start simulations
         for job in jobs:
             job.start()
@@ -270,7 +269,6 @@ def main():
         for job in jobs:
             job.join()
         # Done
-
 
 
 if __name__ == '__main__':
