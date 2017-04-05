@@ -253,6 +253,21 @@ class GameState():
     def getSnakeLength(self):
         return self.snake.getSnakeLength()
 
+    def getRepresentation(self):
+        '''
+        Return a touple (snake, food, score) which
+        is a representation of the gameState. This
+        can be (and is) used by learning agents
+        or evaluation functions to calculate features.
+        snake: self.getSnakeCordinates()
+        food: self.getFoodCordinate()
+        score: self.getScore()
+        '''
+        snake = self.getSnakeCordinates()
+        food = self.getFoodCordinate()
+        score = self.getScore()
+        return (snake, food, score)
+
     def setFoodScore(self, value):
         '''
         Set the score the snake gets when
