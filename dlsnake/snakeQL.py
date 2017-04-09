@@ -11,6 +11,7 @@
 
 import time
 import sys
+import math
 import pygame
 import copy
 import dlsnake.config as cfg
@@ -31,22 +32,20 @@ def main():
     enableTextGraphics = False
     enableGUI = gui and not silent
     enableTextGraphics = enableTextGraphics and not silent
-    numTrials = 1000
+    numTrials = 10
     i = 0
     weights = None
+    average_score = 0.0
+    average_snake_len = 0.0
     while i < numTrials:
-        ep = (numTrials - i) / numTrials
-        al = (numTrials - i) / numTrials
-        print(ep)
         gameState = GameState(cfg.NUM_X_CELL, cfg.NUM_Y_CELL,
                               foodAgent=MaxManhattanFoodAgent)
         if gui:
             guiDriver = toGUI(gameState, cfg.CELL_WIDTH, FRAME_RATE)
-        agent = ApproxQAgent(alpha=0.009, gamma=0.99, epsilon=0.5,
+        agent = ApproxQAgent(alpha=0.8, gamma=1.0, epsilon=0.0,
                              featureExtractor=SimpleFeatureExtractor,
                              weights = weights)
         died = False
-        gameState.setFoodScore(500)
         while not died and not quitGame:
             if enableGUI:
                 for event in pygame.event.get():
@@ -54,13 +53,11 @@ def main():
                         quitGame = True
                         break
             action = agent.getAction(gameState)
-            print("action: ", action)
             currGameState = copy.deepcopy(gameState)
             gameState.chooseAction(action)
             gameState.executeAction()
             nextGameState = copy.deepcopy(gameState)
             reward = nextGameState.score - currGameState.score
-            print(reward)
             agent.update(currGameState, action, reward, nextGameState)
             if enableGUI:
                 guiDriver.show()
@@ -68,20 +65,23 @@ def main():
                 print(gameState.getGrid())
                 print()
             died = gameState.gameOver
-            weights = agent.weights
-            print(weights)
-            # input('continue')
-            # print('weights: ', agent.getWeights())
-            input('Continue?')
-
         i += 1
+        average_score += gameState.score
+        average_snake_len += len(gameState.getSnakeCordinates())
         if i % 100 == 0:
-            score = gameState.score
-            snakeLen = len(gameState.snake.getSnakeCordinateList())
-            print("Game Over!")
-            print("\tScore: %d" % score)
-            print("\tSnakeLen: %d" % snakeLen)
-    if guiDriver is not None:
+            average_score /= 100
+            average_snake_len /= 100
+            print(i, " Episodes Played.")
+            print("\tAverage Score: %d" % average_score)
+            print("\tAverage SnakeLen: %d" % average_snake_len)
+            average_score = 0.0
+            average_snake_len = 0.0
+            print("\t Weights: ", weights)
+
+        # Game Episode is over
+        weights = agent.weights
+
+    if enableGUI:
         pygame.quit()
 
 

@@ -33,21 +33,24 @@ class SimpleFeatureExtractor(FeatureExtractor):
     '''
     FOOD_VICINITY = 'Simple Food Vicinity'
     SCORE_FACTOR = 'Score Factor'
-    FACTORS = [FOOD_VICINITY, SCORE_FACTOR]
+    FACTORS = [FOOD_VICINITY]
 
     def __init__(self):
         self.featureKeys = self.FACTORS
 
     def getFeatures(self, gameState, action):
-        successorGameState = gameState.generateSuccessor(action)
+        # We don't want new food as we want to detect
+        # if the snake ate the food
+        successorGameState = gameState.generateSuccessor(
+            action, newFood = False)
         foodPos = successorGameState.getFoodCordinate()
+        if None in foodPos:
+            return {self.FOOD_VICINITY: 2.0}
         snakePos = successorGameState.getSnakeHeadCordinate()
         from dlsnake.base.util import manhattanDistance
         foodVicinityFactor = manhattanDistance(foodPos, snakePos)
         foodVicinityFactor = 1 / foodVicinityFactor
-        newScore = successorGameState.score
-        return {self.FOOD_VICINITY: 0,
-                self.SCORE_FACTOR: newScore}
+        return {self.FOOD_VICINITY: foodVicinityFactor}
 
 
 if __name__ == '__main__':

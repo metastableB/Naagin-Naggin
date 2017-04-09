@@ -71,7 +71,8 @@ class RandomFoodAgent(FoodAgent):
     def getNextFoodCordinates(self, gameState):
         '''
         Gets the next food cordinate according
-        to the current agent.
+        to the current agent. Returns None
+        if no food is possible
         '''
         msg = 'FoodAgent.getNextFoodCordinates called even when '
         msg += 'food is already present!'
@@ -82,6 +83,11 @@ class RandomFoodAgent(FoodAgent):
             self.X_MIN = 0
             self.Y_MAX = gameState.numYCell
             self.Y_MIN = 0
+        # Make sure you can fetch a new food
+        totalCells = gameState.numXCell * gameState.numYCell
+        snakeCells = len(gameState.getSnakeCordinates())
+        if totalCells - snakeCells < 1:
+            return None, None
         validFood = False
         while not validFood:
             fx, fy = self._FoodAgent__randomFood()
@@ -126,6 +132,9 @@ class MaxManhattanFoodAgent(FoodAgent):
         self.__makeCornerCordinates()
 
     def getNextFoodCordinates(self, gameState):
+        '''
+        Returns None if no food is possible
+        '''
         msg = 'FoodAgent.getNextFoodCordinates called even when '
         msg += 'food is already present!'
         # Make sure we are only called when there is no food
@@ -138,6 +147,11 @@ class MaxManhattanFoodAgent(FoodAgent):
             self.Y_MIN = 0
             self.__makeCornerCordinates()
 
+        # Make sure you can fetch a new food
+        totalCells = gameState.numXCell * gameState.numYCell
+        snakeCells = len(gameState.getSnakeCordinates())
+        if totalCells - snakeCells < 1:
+            return None, None
         # find which corner the snake head is in
         # and select the opposite corner
         # if invalid:

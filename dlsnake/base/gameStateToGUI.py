@@ -19,6 +19,7 @@ class GameStateToGUI:
     SNAKE_HEAD_COLOR = cfg.COLOR_LIGHT_GREEN
     FONT_COLOR = cfg.COLOR_RED
     gameOverMessage = "Game Over!"
+    completionMessage = "Game Completed!"
 
     def __init__(self, gameState, cellWidth, frameRate=cfg.GAME_FRAME_RATE):
         '''
@@ -56,13 +57,20 @@ class GameStateToGUI:
     '''
 
     def __drawMessage(self):
-        if self.gameState.gameOver:
-            self.gameOverMessageSurface = self.scoreFont.render(
-                self.gameOverMessage, False, self.FONT_COLOR)
-            pos_x = self.canvasWidth / 2 - 2 * self.cellWidth
-            pos_y = self.canvasHeight / 2
-            pos = (pos_x, pos_y)
-            self.gameDisplay.blit(self.gameOverMessageSurface, pos)
+        message = None
+        if self.gameState.gameComplete:
+            message = self.completionMessage
+        elif self.gameState.gameOver:
+            message = self.gameOverMessage
+        else:
+            return
+
+        self.gameOverMessageSurface = self.scoreFont.render(
+            message, False, self.FONT_COLOR)
+        pos_x = self.canvasWidth / 2 - 2 * self.cellWidth
+        pos_y = self.canvasHeight / 2
+        pos = (pos_x, pos_y)
+        self.gameDisplay.blit(self.gameOverMessageSurface, pos)
 
     def __drawScore(self):
         length = self.gameState.getSnakeLength()
@@ -89,6 +97,9 @@ class GameStateToGUI:
 
     def __drawFood(self):
         x, y = self.gameState.food.getFoodCordinate()
+        # If the game has no food!
+        if None in (x, y):
+            return
         xpix, ypix = self.__cell_to_pixels(x, y)
         self.__color_cell(xpix, ypix, self.FOOD_COLOR)
 

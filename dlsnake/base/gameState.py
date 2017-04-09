@@ -48,7 +48,9 @@ class GameState():
         self.score = 0
         self.foodScore = 50
         self.livingScore = -1
+        self.completionScore = 500
         self.gameOver = False
+        self.gameComplete = False
 
     def getGrid(self):
         '''
@@ -144,6 +146,11 @@ class GameState():
             self.food.newFood(None, None)
             if newFood:
                 fx, fy = self.foodAgent.getNextFoodCordinates(self)
+                if None in (fx, fy):
+                    self.gameOver = True
+                    self.gameComplete = True
+                    self.score += self.completionScore
+                    return False
                 self.food.newFood(fx, fy)
             self.score += self.foodScore
         if(self.score < -10):
@@ -181,7 +188,7 @@ class GameState():
         else:
             return []
 
-    def generateSuccessor(self, action):
+    def generateSuccessor(self, action, newFood = True):
         '''
         Generates the successor state after executing
         action for snake and foodAgent. The current
@@ -190,7 +197,7 @@ class GameState():
         '''
         successorGameState = copy.deepcopy(self)
         successorGameState.chooseAction(action)
-        successorGameState.executeAction()
+        successorGameState.executeAction(newFood)
         return successorGameState
 
     def generateSnakeSuccessor(self, action):
