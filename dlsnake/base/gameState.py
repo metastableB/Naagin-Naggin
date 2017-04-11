@@ -153,7 +153,8 @@ class GameState():
                     return False
                 self.food.newFood(fx, fy)
             self.score += self.foodScore
-        if(self.score < -10):
+        # FIXME
+        if(self.score < -50):
             self.gameOver = True
             return False
         return True

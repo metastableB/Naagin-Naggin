@@ -17,8 +17,8 @@ import copy
 import dlsnake.config as cfg
 from dlsnake.base.gameState import GameState
 from dlsnake.base.gameStateToGUI import GameStateToGUI as toGUI
-from dlsnake.base.featureExtractor import SimpleFeatureExtractor
-from dlsnake.agents.foodAgent import MaxManhattanFoodAgent
+from dlsnake.base.featureExtractor import OneNearestNeighbourFeatureExtractor as Neighbor
+from dlsnake.agents.foodAgent import RandomFoodAgent
 from dlsnake.agents.approxQAgent import ApproxQAgent
 FRAME_RATE = cfg.GAME_FRAME_RATE
 VERSION = cfg.VERSION_NUMBER
@@ -32,18 +32,19 @@ def main():
     enableTextGraphics = False
     enableGUI = gui and not silent
     enableTextGraphics = enableTextGraphics and not silent
-    numTrials = 10
+    numTrials = 5000
     i = 0
     weights = None
     average_score = 0.0
     average_snake_len = 0.0
     while i < numTrials:
+        ep = (numTrials - i) / numTrials
         gameState = GameState(cfg.NUM_X_CELL, cfg.NUM_Y_CELL,
-                              foodAgent=MaxManhattanFoodAgent)
+                              foodAgent=RandomFoodAgent)
         if gui:
             guiDriver = toGUI(gameState, cfg.CELL_WIDTH, FRAME_RATE)
-        agent = ApproxQAgent(alpha=0.8, gamma=1.0, epsilon=0.0,
-                             featureExtractor=SimpleFeatureExtractor,
+        agent = ApproxQAgent(alpha=0.8, gamma=1.0, epsilon=ep,
+                             featureExtractor=Neighbor,
                              weights = weights)
         died = False
         while not died and not quitGame:
