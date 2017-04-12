@@ -68,7 +68,7 @@ optional arguments:
 
 ```
 
-## Relavant Material 
+## Relevant Material 
   - [Dynamic Programming and Reinforcement Learning](http://research.cs.rutgers.edu/~thomaswa/pub/Geramifard13Tutorial.pdf)
   - [Going Deeper Into Reinforcement Learning: Understanding Q-Learning and Linear Function Approximation](https://danieltakeshi.github.io/2016/10/31/going-deeper-into-reinforcement-learning-understanding-q-learning-and-linear-function-approximation/)
   - [Q-learning with linear function approximation](https://pdfs.semanticscholar.org/e0ea/3bae8168d74b0256882926bcb38f2252ab63.pdf)
