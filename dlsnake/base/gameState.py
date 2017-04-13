@@ -46,11 +46,13 @@ class GameState():
         self.snake = snake.Snake(0, 0, numXCell, numYCell)
         self.foodAgent = foodAgent()
         self.score = 0
-        self.foodScore = 50
-        self.livingScore = -1
-        self.completionScore = 500
+        self.foodScore = 50  # 0.5
+        self.livingScore = -1  # -0.005
+        self.completionScore = 500  # 1.0
         self.gameOver = False
         self.gameComplete = False
+        self.collisionScore = -50  # -0.5
+        self.minAllowedScore = -50  # -2.0
 
     def getGrid(self):
         '''
@@ -138,6 +140,7 @@ class GameState():
         # Move according to direction
         if not snake.update():
             self.gameOver = True
+            self.score += self.gameOverScore
             return False
         # Snake is not dead, add livingScore and try to eat food
         self.score += self.livingScore
@@ -153,9 +156,10 @@ class GameState():
                     return False
                 self.food.newFood(fx, fy)
             self.score += self.foodScore
-        # FIXME
-        if(self.score < -50):
+
+        if(self.score < self.minAllowedScore):
             self.gameOver = True
+            self.score += self.gameOverScore
             return False
         return True
 

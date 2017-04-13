@@ -11,13 +11,14 @@
 
 import time
 import sys
+import pprint
 import math
 import pygame
 import copy
 import dlsnake.config as cfg
 from dlsnake.base.gameState import GameState
 from dlsnake.base.gameStateToGUI import GameStateToGUI as toGUI
-from dlsnake.base.featureExtractor import OneNearestNeighbourFeatureExtractor as Neighbor
+from dlsnake.base.featureExtractor import SimpleFeatureExtractor2 as Neighbor
 from dlsnake.agents.foodAgent import RandomFoodAgent
 from dlsnake.agents.approxQAgent import ApproxQAgent
 FRAME_RATE = cfg.GAME_FRAME_RATE
@@ -25,14 +26,13 @@ VERSION = cfg.VERSION_NUMBER
 
 
 def main():
-    gui = True
+    silent = False
+    enableGUI = True and not silent
     died = False
     quitGame = False
-    silent = False
     enableTextGraphics = False
-    enableGUI = gui and not silent
     enableTextGraphics = enableTextGraphics and not silent
-    numTrials = 5000
+    numTrials = 50000
     i = 0
     weights = None
     average_score = 0.0
@@ -41,9 +41,9 @@ def main():
         ep = (numTrials - i) / numTrials
         gameState = GameState(cfg.NUM_X_CELL, cfg.NUM_Y_CELL,
                               foodAgent=RandomFoodAgent)
-        if gui:
+        if enableGUI:
             guiDriver = toGUI(gameState, cfg.CELL_WIDTH, FRAME_RATE)
-        agent = ApproxQAgent(alpha=0.8, gamma=1.0, epsilon=ep,
+        agent = ApproxQAgent(alpha=ep, gamma=0.90, epsilon=ep,
                              featureExtractor=Neighbor,
                              weights = weights)
         died = False
@@ -69,18 +69,25 @@ def main():
         i += 1
         average_score += gameState.score
         average_snake_len += len(gameState.getSnakeCordinates())
-        if i % 100 == 0:
-            average_score /= 100
-            average_snake_len /= 100
-            print(i, " Episodes Played.")
+        if i % 1000 == 0:
+            average_score /= 1000
+            average_snake_len /= 1000
+            print(i, "Episodes Played.")
             print("\tAverage Score: %d" % average_score)
             print("\tAverage SnakeLen: %d" % average_snake_len)
+            print("\tEpsilon: ", ep)
             average_score = 0.0
             average_snake_len = 0.0
-            print("\t Weights: ", weights)
+            pprint.pprint(weights)
+            enableGUI = True
 
+        else:
+            enableGUI = False
         # Game Episode is over
         weights = agent.weights
+        # a = weights['Occupied Factor']
+        # b = weights['Simple Food Vicinity']
+        # print("%f,%f" % (a, b))
 
     if enableGUI:
         pygame.quit()

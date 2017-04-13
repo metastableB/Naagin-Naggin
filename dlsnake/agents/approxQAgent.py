@@ -19,10 +19,9 @@ class ApproxQAgent(Agent):
         self.featExtractor = self.featExtractor()
         self.weights = args['weights']
         if not self.weights:
-            # print("GOT NONE")
             self.weights = {}
             for f in self.featExtractor.getFeatureKeys():
-                self.weights[f] = 0.0
+                self.weights[f] = random.uniform(0, 1)
 
     def getAction(self, gameState):
         """
@@ -53,7 +52,6 @@ class ApproxQAgent(Agent):
     def computeActionFromQValues(self, gameState):
         legalMoves = gameState.getLegalActionsSnake()
         if not legalMoves:
-            # FIXME: Check for game over
             raise ValueError('No legal Actions!')
         # NOTE: getQValue, which internally calls
         # featExtractor.getFeatures() need not return the same
@@ -86,18 +84,22 @@ class ApproxQAgent(Agent):
         alpha = self.alpha
         difference = reward
         difference += gamma * self.computeValueFromQValues(nextGameState)
-        # print(currGameState.getGrid())
-        # print()
-        # print(nextGameState.getGrid())
+        difference -= self.getQValue(currGameState, action)
         features = self.featExtractor.getFeatures(currGameState, action)
-        sum = 0.0
+        max_ = float('-inf')
+        min_ = float('+inf')
         for f in features:
             self.weights[f] += alpha * difference * features[f]
-            sum += self.weights[f]
-        if sum == 0.0:
+            if self.weights[f] > max_:
+                max_ = self.weights[f]
+            if self.weights[f] < min_:
+                min_ = self.weights[f]
+
+        range_ = abs(max_ - min_)
+        if range_ == 0.0:
             return
         for f in features:
-            self.weights[f] /= sum
+            self.weights[f] = self.weights[f] / range_
 
     def getPolicy(self, gameStateRep):
         return self.compulteActionFromQValues(gameStateRep)

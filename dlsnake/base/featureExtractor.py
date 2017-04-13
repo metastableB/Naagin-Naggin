@@ -52,6 +52,38 @@ class SimpleFeatureExtractor(FeatureExtractor):
         return {self.FOOD_VICINITY: foodVicinityFactor}
 
 
+class SimpleFeatureExtractor2(FeatureExtractor):
+    '''
+    A very simple feature extractor for approx Q-learning.
+    '''
+    FOOD_VICINITY = 'Simple Food Vicinity'
+    OCCUPIED = 'Occupied Factor'
+    FACTORS = [FOOD_VICINITY, OCCUPIED]
+
+    def __init__(self):
+        self.featureKeys = self.FACTORS
+
+    def getFeatures(self, gameState, action):
+        # We don't want new food as we want to detect
+        # if the snake ate the food
+        successorGameState = gameState.generateSuccessor(
+            action, newFood = False)
+        foodPos = successorGameState.getFoodCordinate()
+        if None in foodPos:
+            return {self.FOOD_VICINITY: 2.0,
+                    self.OCCUPIED: 0.0}
+        snakePos = successorGameState.getSnakeHeadCordinate()
+        from dlsnake.base.util import manhattanDistance
+        foodVicinityFactor = manhattanDistance(foodPos, snakePos)
+        foodVicinityFactor = 1.0 / foodVicinityFactor
+        occupiedFactor = 0.0
+        if snakePos in gameState.getSnakeCordinates():
+            occupiedFactor = 1.0
+
+        return {self.FOOD_VICINITY: foodVicinityFactor,
+                self.OCCUPIED: occupiedFactor}
+
+
 class OneNearestNeighbourFeatureExtractor(FeatureExtractor):
     '''
     Considers food vicinity and checks neighbors of head
@@ -60,7 +92,9 @@ class OneNearestNeighbourFeatureExtractor(FeatureExtractor):
     FOOD_VICINITY = 'Simple Food Vicinity'
     ONE_NEAREST_NEIGHBOURS = 'One-Nearest Neighbor'
     SCORE_LOST = 'Score Lost Factor'
-    FACTORS = [FOOD_VICINITY, ONE_NEAREST_NEIGHBOURS, SCORE_LOST]
+    LENGTH = 'Length Factor'
+    COMB_LENGTH_NEIGHBOUR = 'f(length, neighbor)'
+    FACTORS = [FOOD_VICINITY]
 
     def __init__(self):
         self.featureKeys = self.FACTORS
@@ -96,9 +130,16 @@ class OneNearestNeighbourFeatureExtractor(FeatureExtractor):
         # Can happen if gameOVer
         if scoreLostFactor != 0:
             scoreLostFactor = 1 / scoreLostFactor
-        return {self.FOOD_VICINITY: foodVicinityFactor,
-                self.ONE_NEAREST_NEIGHBOURS: oneNearestFactor,
-                self.SCORE_LOST: scoreLostFactor}
+        # Length Factor
+        length = len(successorGameState.getSnakeCordinates())
+        length = 1 / length
+        comb = length * oneNearestFactor
+        return {self.FOOD_VICINITY: foodVicinityFactor
+                # self.ONE_NEAREST_NEIGHBOURS: oneNearestFactor,
+                # self.SCORE_LOST: scoreLostFactor,
+                # self.LENGTH: length,
+                # self.COMB_LENGTH_NEIGHBOUR: comb
+                }
 
     def __getNeighborCellCords(self, gameState):
         x, y = gameState.getSnakeHeadCordinate()
