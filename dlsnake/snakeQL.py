@@ -30,11 +30,13 @@ def main():
     trainRange = numTrials * 0.80
     guiRange = 100
     i = 0
-    weights = None
+    weights = {'Min Circular Food Vicinity': 2.831991,
+               'Collision Factor': 1.831991}
     average_score = 0.0
     average_snake_len = 0.0
-    csv = True
+    csv = False
     header = "Episode,Score,Length,Epsilon,Alpha"
+    noUpdate = True
     for f in featExtractor().getFeatureKeys():
         temp = ',' + f
         header += temp
@@ -68,7 +70,8 @@ def main():
             gameState.chooseAction(action)
             gameState.executeAction()
             nextGameState = copy.deepcopy(gameState)
-            agent.update(currGameState, action, nextGameState)
+            if not noUpdate:
+                agent.update(currGameState, action, nextGameState)
             if enableGUI:
                 guiDriver.show()
             if enableTextGraphics:
