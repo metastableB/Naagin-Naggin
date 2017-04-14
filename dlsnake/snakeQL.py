@@ -22,21 +22,22 @@ VERSION = cfg.VERSION_NUMBER
 
 
 def main():
+    # BEGIN Configuration Options
     enableGUI = False
-    died = False
-    quitGame = False
     enableTextGraphics = False
     numTrials = 2000
     trainRange = numTrials * 0.80
     guiRange = 100
-    i = 0
-    weights = {'Min Circular Food Vicinity': 2.831991,
-               'Collision Factor': 1.831991}
+    weights = None
     average_score = 0.0
     average_snake_len = 0.0
-    csv = False
+    csv = True
+    noUpdate = False
+    # END COFIGURATION OPTIONS
+    i = 0
     header = "Episode,Score,Length,Epsilon,Alpha"
-    noUpdate = True
+    died = False
+    quitGame = False
     for f in featExtractor().getFeatureKeys():
         temp = ',' + f
         header += temp
@@ -49,8 +50,8 @@ def main():
             ep = 0.5
             al = 0.5
         else:
-            ep = 0.1
-            al = 0.9
+            ep = 0.001
+            al = 0.5
         gameState = GameState(cfg.NUM_X_CELL, cfg.NUM_Y_CELL,
                               foodAgent=RandomFoodAgent)
         if enableGUI:

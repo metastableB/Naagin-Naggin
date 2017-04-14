@@ -4,20 +4,18 @@ Using adverserial search, reinforcement learning and eventually deep-q learning 
 
 ## Preview
 
-Properties|Reflex | MinMax|
-|----------|-------------|-------------|
-|Preview    |<img src="preview/01.gif" height="200" alt="A Simple Reflex-Agent playing Snake">|<img src="preview/02.gif" height="200" alt="A Simple MinMax-Agent playing Snake">|
-|Grid Size| 20x20 | 20x20|
-SnakeAgent| Reflex| MinMax|
-Food Agent| MaxManhattanFood|MaxManhattanFood|
-Mean Score| 1645.450|1857.575|
-Mean Snake Length | 59.125| 47.400|
-Time-Real (40 runs)| 1m14.105s | (approx)\* 4 Hour|
-Time-User (40 runs)| 0m6.547s | (approx)\* 4 Hour|
-Time-System (40 runs)| 0m0.980s | (approx)\* 0 Hour|
-Misc| None|  Depth=6
-
-\* *The latest implementation using a lazy-evaluation technique has brought this down to 40 minutes. New data coming up soon!*
+Properties|Reflex | MinMax| Approx Q-Learning|
+|----------|-------------|-------------|----------|
+|Preview    |<img src="preview/01.gif" height="200" alt="A Simple Reflex-Agent playing Snake">|<img src="preview/02.gif" height="200" alt="A Simple MinMax-Agent playing Snake">|<img src="preview/ApproxQL_feat3_10x10_10000.png" height="200" alt="A Simple MinMax-Agent playing Snake">|
+|Grid Size| 20x20 | 20x20| 10x10|
+SnakeAgent| Reflex| MinMax| ApproxQLearning|
+Food Agent| MaxManhattanFood|MaxManhattanFood| RandomFoodAgent|
+Mean Score| 1645.450|1857.575| 142.96|
+Mean Snake Length | 59.125| 47.400| 5.41
+Time-Real | 1m14.105s (40 runs) | 40m (40 runs)| 1m21.371s (2000 episodes)
+Time-User | 0m6.547s  (40 runs)| 40m (40 runs)| 1m21.163s (2000 episodes)
+Time-System | 0m0.980s  (40 runs)| 0m (40 runs)|0m0.457s (2000 episodes)
+Misc| None|  Depth=6| FeatureExtractor: simpleFeatureExtractor3|
 
 
 ## Installation
