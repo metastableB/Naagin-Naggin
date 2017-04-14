@@ -79,7 +79,8 @@ class ApproxQAgent(Agent):
             values.append(q)
         return max(values)
 
-    def update(self, currGameState, action, reward, nextGameState):
+    def update(self, currGameState, action, nextGameState):
+        reward = self.featExtractor.getReward(currGameState, nextGameState)
         gamma = self.gamma
         alpha = self.alpha
         difference = reward

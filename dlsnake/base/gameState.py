@@ -65,7 +65,10 @@ class GameState():
         s = ''
         for x in range(0, h):
             for y in range(0, w):
-                s += str(grid[x][y])
+                if grid[x][y] != self.EMPTY_CELL_VALUE:
+                    s += str(grid[x][y])
+                else:
+                    s += '.'
             s += '\n'
         return s[:-1]
 
@@ -134,13 +137,13 @@ class GameState():
         if newFood is set to False, no new food will be generated
         even if the snake eats the food. If the snake eats the food,
         new food is set to None
-        returns False if the snake has died, else returns True
+        returns False if the game ended, else returns True
         '''
         snake = self.snake
         # Move according to direction
         if not snake.update():
             self.gameOver = True
-            self.score += self.gameOverScore
+            self.score += self.collisionScore
             return False
         # Snake is not dead, add livingScore and try to eat food
         self.score += self.livingScore
@@ -159,7 +162,7 @@ class GameState():
 
         if(self.score < self.minAllowedScore):
             self.gameOver = True
-            self.score += self.gameOverScore
+            self.score += self.collisionScore
             return False
         return True
 
@@ -277,6 +280,21 @@ class GameState():
         each move, this value is added to the snake.
         '''
         self.livingScore = value
+
+    def getCurrentDirection(self):
+        '''
+        Returns the current direction of motion of the snake.
+        Returned values among gameState.possibleActions
+        '''
+        currDir = self.snake.getCurrentDirection()
+        if currDir == (0, 1):
+            return self.ACTION_UP
+        elif currDir == (0, -1):
+            return self.ACTION_DOWN
+        elif currDir == (1, 0):
+            return self.ACTION_LEFT
+        elif currDir == (-1, 0):
+            return self.ACTION_RIGHT
 
     '''
     PRIVATE METHODS
