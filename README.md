@@ -15,7 +15,7 @@ Mean Snake Length | 59.125| 47.400| 5.41
 Time-Real | 1m14.105s (40 runs) | 40m (40 runs)| 1m21.371s (2000 episodes)
 Time-User | 0m6.547s  (40 runs)| 40m (40 runs)| 1m21.163s (2000 episodes)
 Time-System | 0m0.980s  (40 runs)| 0m (40 runs)|0m0.457s (2000 episodes)
-Misc| None|  Depth=6| FeatureExtractor: simpleFeatureExtractor3|
+Misc| None|  Depth=6| FeatureExtractor: simpleFeatureExtractor3, Scores scaled by 1/max(scores) and not normalized|
 
 
 ## Installation
