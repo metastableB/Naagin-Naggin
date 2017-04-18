@@ -5,6 +5,7 @@
 
 import random
 from dlsnake.agents.agent import Agent
+from dlsnake.base.featureExtractor import SimpleFeatureExtractor4 as FeatureExtractor
 
 
 class ReflexAgent(Agent):
@@ -65,3 +66,30 @@ class ReflexAgent(Agent):
         if successorGameState.gameOver:
             value -= 10
         return value
+
+
+class ReflexAgentControl(ReflexAgent):
+    '''
+    A control reflex agent used for comparison
+    with Q-learning with approximation
+    '''
+
+    def __init__(self, agentId=0):
+        self.agentId = agentId
+        self.silent = True
+        self.featExtractor = FeatureExtractor()
+        self.weights = None
+        for f in self.featExtractor.getFeatureKeys():
+            self.weights[f] = random.uniform(0, 1)
+
+    def evaluationFunction(self, currentGameState, action):
+        '''
+        Uses the feature extractors evalution (LAF) function
+        with custom weights to override the evaluationFunction
+        '''
+        print("Using new evalution function")
+        features = self.featExtractor.getFeatures(currentGameState, action)
+        v = 0.0
+        for f in features:
+            v += self.weights[f] * features[f]
+        return v
