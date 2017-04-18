@@ -14,7 +14,7 @@ import copy
 import dlsnake.config as cfg
 from dlsnake.base.gameState import GameState
 from dlsnake.base.gameStateToGUI import GameStateToGUI as toGUI
-from dlsnake.base.featureExtractor import SimpleFeatureExtractor3 as featExtractor
+from dlsnake.base.featureExtractor import SimpleFeatureExtractor4 as featExtractor
 from dlsnake.agents.foodAgent import RandomFoodAgent
 from dlsnake.agents.approxQAgent import ApproxQAgent
 FRAME_RATE = cfg.GAME_FRAME_RATE
@@ -46,17 +46,15 @@ def main():
     while i < numTrials:
         if i < trainRange:
             ep = (numTrials - i) / numTrials
-            al = ep if (ep > 0.6) else 0.6
-            ep = 0.5
-            al = 0.5
+            al = ep*0.8
         else:
-            ep = 0.001
-            al = 0.5
+            ep = 0.01
+            al = 0.01
         gameState = GameState(cfg.NUM_X_CELL, cfg.NUM_Y_CELL,
                               foodAgent=RandomFoodAgent)
         if enableGUI:
             guiDriver = toGUI(gameState, cfg.CELL_WIDTH, FRAME_RATE)
-        agent = ApproxQAgent(alpha=al, gamma=0.90, epsilon=ep,
+        agent = ApproxQAgent(alpha=al, gamma=0.700, epsilon=ep,
                              featureExtractor=featExtractor,
                              weights = weights)
         died = False

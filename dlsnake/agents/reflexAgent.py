@@ -17,7 +17,7 @@ class ReflexAgent(Agent):
 
     def __init__(self, agentId=0):
         self.agentId = agentId
-        self.silent = True
+        self.silent = False
 
     def getAction(self, gameState):
         """
@@ -37,6 +37,7 @@ class ReflexAgent(Agent):
         chosenIndex = random.choice(bestIndices)
 
         if not self.silent:
+            print("All scores: ", scores)
             print("chosing: " + str(legalMoves[chosenIndex]))
             print()
         return legalMoves[chosenIndex]
@@ -78,16 +79,20 @@ class ReflexAgentControl(ReflexAgent):
         self.agentId = agentId
         self.silent = True
         self.featExtractor = FeatureExtractor()
-        self.weights = None
-        for f in self.featExtractor.getFeatureKeys():
-            self.weights[f] = random.uniform(0, 1)
+        self.weights = {}
+        # for f in self.featExtractor.getFeatureKeys():
+        #     self.weights[f] = random.uniform(0, 1)
+        self.weights = {
+            'Min Circular Food Vicinity': 5.0,
+            'Collision Factor': -5.9,
+            'Gradient Snake Vicinity': -1.2
+        }
 
     def evaluationFunction(self, currentGameState, action):
         '''
         Uses the feature extractors evalution (LAF) function
         with custom weights to override the evaluationFunction
         '''
-        print("Using new evalution function")
         features = self.featExtractor.getFeatures(currentGameState, action)
         v = 0.0
         for f in features:

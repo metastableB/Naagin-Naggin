@@ -8,7 +8,7 @@ import argparse
 import pygame
 from dlsnake.base.gameStateToGUI import GameStateToGUI as toGUI
 from dlsnake.base.gameState import GameState
-from dlsnake.agents.reflexAgent import ReflexAgent
+from dlsnake.agents.reflexAgent import ReflexAgent, ReflexAgentControl
 from dlsnake.agents.minMaxAgent import MinMaxAgent
 from dlsnake.agents.foodAgent import RandomFoodAgent, MaxManhattanFoodAgent
 import dlsnake.config as cfg
@@ -101,6 +101,7 @@ class ArgumentOptions:
     agentChoiceDict = {
         'ReflexAgent': ReflexAgent,
         'MinMaxAgent': MinMaxAgent,
+        'ControlReflexAgent': ReflexAgentControl,
     }
     agentChoices = agentChoiceDict.keys()
     foodAgentChoiceDict = {

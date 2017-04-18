@@ -132,6 +132,71 @@ class SimpleFeatureExtractor3(FeatureExtractor):
             circularMD = 1.1
         else:
             circularMD = 1.0 / float(circularMD)
+        snakePos = successorGameState.getSnakeHeadCordinate()
+        collision = 0.0
+        if snakePos in gameState.getSnakeCordinates():
+            collision = 1.3
+        return {self.CIRCULAR_FOOD_VICINITY: circularMD,
+                self.COLLISION: collision}
+
+    def getMinCircularManhattanDistance(self, gameState):
+        '''
+        Returns the minimum circular manhattan distance.
+        Where circular is defined as a motion through the
+        ends of the grid (borders of the gird)
+        '''
+        md = []
+        foodPos = gameState.getFoodCordinate()
+        if None in foodPos:
+            return None
+        snakePos = gameState.getSnakeHeadCordinate()
+        temp = manhattanDistance(snakePos, foodPos)
+        md.append(temp)
+        if self.X_MAX is None:
+            self.X_MAX = gameState.numXCell - 1
+            self.Y_MAX = gameState.numYCell - 1
+        XY_MAX = (self.X_MAX, self.Y_MAX)
+        # Moving Up
+        md.append(circularManhattanDistance(
+            snakePos, foodPos, XY_MAX, GameState.ACTION_UP))
+        # Moving into lower border
+        md.append(circularManhattanDistance(
+            snakePos, foodPos, XY_MAX, GameState.ACTION_DOWN))
+        # Moving into left border
+        md.append(circularManhattanDistance(
+            snakePos, foodPos, XY_MAX, GameState.ACTION_LEFT))
+        # Moving into right border
+        md.append(circularManhattanDistance(
+            snakePos, foodPos, XY_MAX, GameState.ACTION_RIGHT))
+        return min(md)
+
+
+class SimpleFeatureExtractor4(FeatureExtractor):
+    '''
+    A very simple feature extractor for approx Q - learning.
+    '''
+    CIRCULAR_FOOD_VICINITY = 'Min Circular Food Vicinity'
+    GRAD_VICINITY = 'Gradient Snake Vicinity'
+    COLLISION = 'Collision Factor'
+    FACTORS = [CIRCULAR_FOOD_VICINITY, COLLISION, GRAD_VICINITY]
+
+    def __init__(self):
+        self.scoreRange = None
+        self.featureKeys = self.FACTORS
+        self.X_MAX = None
+        self.Y_MAX = None
+        self.allDirections = GameState.ALL_ACTIONS
+
+    def getFeatures(self, gameState, action):
+        # We don't want new food as we want to detect
+        # if the snake ate the food
+        successorGameState = gameState.generateSuccessor(
+            action, newFood = False)
+        circularMD = self.getMinCircularManhattanDistance(successorGameState)
+        if circularMD is None:
+            circularMD = 1.1
+        else:
+            circularMD = 1.0 / float(circularMD)
 
         getGradVicinity = self.getGradVicinity(successorGameState)
         snakePos = successorGameState.getSnakeHeadCordinate()
@@ -139,7 +204,8 @@ class SimpleFeatureExtractor3(FeatureExtractor):
         if snakePos in gameState.getSnakeCordinates():
             collision = 1.3
         return {self.CIRCULAR_FOOD_VICINITY: circularMD,
-                self.COLLISION: collision}
+                self.COLLISION: collision,
+                self.GRAD_VICINITY: getGradVicinity}
 
     def getMinCircularManhattanDistance(self, gameState):
         '''

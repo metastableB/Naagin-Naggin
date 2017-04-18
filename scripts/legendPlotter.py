@@ -4,6 +4,7 @@
 #
 # Example on how to plot data with legends
 import matplotlib.pyplot as plt
+import pandas as pd
 
 
 def legendPlot(data, columns):
@@ -14,3 +15,9 @@ def legendPlot(data, columns):
     frame.set_facecolor('0.90')
     plt.xlabel('xth Episode')
     plt.show()
+
+
+def getData(datafile):
+    data = pd.read_csv(datafile)
+    data['Scaled Score'] = data['Score'] / max(data['Score'])
+    return data

@@ -287,13 +287,13 @@ class GameState():
         Returned values among gameState.possibleActions
         '''
         currDir = self.snake.getCurrentDirection()
-        if currDir == (0, 1):
+        if currDir == (0, -1):
             return self.ACTION_UP
-        elif currDir == (0, -1):
+        elif currDir == (0, 1):
             return self.ACTION_DOWN
-        elif currDir == (1, 0):
-            return self.ACTION_LEFT
         elif currDir == (-1, 0):
+            return self.ACTION_LEFT
+        elif currDir == (1, 0):
             return self.ACTION_RIGHT
 
     '''

@@ -84,11 +84,22 @@ class ApproxQAgent(Agent):
         gamma = self.gamma
         alpha = self.alpha
         difference = reward
-        difference += gamma * self.computeValueFromQValues(nextGameState)
-        difference -= self.getQValue(currGameState, action)
+        value = self.computeValueFromQValues(nextGameState)
+        difference += gamma * value
+        qval = self.getQValue(currGameState, action)
+        difference -= qval
         features = self.featExtractor.getFeatures(currGameState, action)
         max_ = float('-inf')
         min_ = float('+inf')
+        # if difference > 1000.0:
+        #     print()
+        #     print('difference: ', difference)
+        #     print('reward: ', reward)
+        #     print('value: ', value)
+        #     print('qvalue: ', qval)
+        #     print('features: ', features)
+        #     print('weights: ', self.weights)
+        #     input()
         for f in features:
             self.weights[f] += alpha * difference * features[f]
             if self.weights[f] > max_:
@@ -99,8 +110,8 @@ class ApproxQAgent(Agent):
         range_ = abs(max_ - min_)
         if range_ == 0.0:
             return
-        for f in features:
-            self.weights[f] = self.weights[f] / range_
+        # for f in features:
+        #     self.weights[f] = self.weights[f] / range_
 
     def getPolicy(self, gameStateRep):
         return self.compulteActionFromQValues(gameStateRep)
