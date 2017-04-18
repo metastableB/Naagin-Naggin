@@ -6,7 +6,7 @@ Using adverserial search, reinforcement learning and eventually deep-q learning 
 
 Properties|Reflex | MinMax| Approx Q-Learning|
 |----------|-------------|-------------|----------|
-|Preview    |<img src="preview/01.gif" height="200" alt="A Simple Reflex-Agent playing Snake">|<img src="preview/02.gif" height="200" alt="A Simple MinMax-Agent playing Snake">|<img src="preview/ApproxQL_feat4_20x20_2000.png" height="200" alt="A Simple MinMax-Agent playing Snake">|
+|Preview    |<img src="preview/01.gif" height="200" alt="A Simple Reflex-Agent playing Snake">|<img src="preview/02.gif" height="200" alt="A Simple MinMax-Agent playing Snake">|<img src="preview/04.gif" height="200" alt="A Simple MinMax-Agent playing Snake">|
 |Grid Size| 20x20 | 20x20| 20x20|
 SnakeAgent| Reflex| MinMax| ApproxQLearning|
 Food Agent| MaxManhattanFood|MaxManhattanFood| RandomFoodAgent|
@@ -18,11 +18,11 @@ Time-System | 0m0.980s  (40 runs)| 0m (40 runs)|0m0.457s (2000 episodes)
 Misc| None|  Depth=6| FeatureExtractor: simpleFeatureExtractor4|
 
 
-The following shows the convergence of weights in approximate Q-Learinig.
+The following table shows some more analysis on the training data.
 
-|Weight Convergence|
-|------------------|
-|<img src="preview/ApproxQL_feat4_20x20_2000_weights.png" height="200" alt="A Simple Reflex-Agent playing Snake">|
+|Weight Convergence| Scaled Score |
+|------------------|-------------|
+|<img src="preview/ApproxQL_feat4_20x20_2000_weights.png" height="200" alt="A Simple Reflex-Agent playing Snake">|<img src="preview/ApproxQL_feat4_20x20_2000.png" height="200" alt="A Simple Reflex-Agent playing Snake">
 ## Installation
 >The module uses `python3` and has `Keras` with `Theano` backend installed from their upstream git repository as the pip package was not up-to-date. If you face problems with Keras during the installation procedure, revert back to the version specified in the `requirements.txt`. 
 

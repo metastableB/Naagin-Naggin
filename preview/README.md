@@ -69,3 +69,20 @@ Time Output:
     sys 0m2.413s
 ```
 Depth: 1
+
+**04.gif**
+Grid Size:20x20
+Cell Size:30
+Food Score:50
+Living Score:-1
+Snake Agent: ApproxQLAgent
+Food Agent: RandomFoodAgent
+Score: 1849
+SnakeLen: 70
+Time Output:
+```
+    real    1m28.848s
+    user    0m6.160s
+    sys     0m1.437s
+```
+Feature Extractor: `base.featureExtractor.SimpleFeatureExtractor4`
